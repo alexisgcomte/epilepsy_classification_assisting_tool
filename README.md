@@ -9,8 +9,3 @@
 - Export to csv of the results
 - Next button?
 - Better lisibility?
-
-# Ceci est
-### un 
-<span style="background-color: #FF1493"> test</span>
-<mark>Marked text</mark>
