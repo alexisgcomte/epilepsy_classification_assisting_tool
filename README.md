@@ -2,10 +2,9 @@
 
 ## Done
 - First running app loading the csv
-- Display of the report, hashtags and crisis type thanks to index
+- Display of the reports by patients, hashtags and seizure type thanks to index for two patient ID (258, 2289)
 
 ## Next steps:
-- Colorizing the text
 - Export to csv of the results
 - Next button?
 - Better lisibility?
