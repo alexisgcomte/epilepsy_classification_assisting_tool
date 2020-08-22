@@ -11,9 +11,29 @@ def load_data():
     data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
     return data
 
+@st.cache
+def load_classified_reports():
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding="iso-8859-1")
+    return data
+
+@st.cache
+def load_tags_list():
+    data = pd.read_csv('data/parameters/tags_list.csv', encoding="iso-8859-1")
+    tags_list = data['tags'].tolist()
+    return tags_list
+
+@st.cache
+def load_epilepsy_types_list():
+    data = pd.read_csv('data/parameters/epilepsy_types.csv', encoding="iso-8859-1")
+    epilepsy_type_list = data['epilepsy_types'].tolist()
+    return epilepsy_type_list
+
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.info('Loading data...')
 dataset = load_data()
+classified_dataset = load_classified_reports()
+tags_list = load_tags_list()
+epilepsy_type_list = load_epilepsy_types_list()
 
 # Notify the reader that the data was successfully loaded.
 data_load_state.success("Data Loaded in cache successfully!")
@@ -85,6 +105,15 @@ st.sidebar.subheader('Select Patient ID')
 unique_patient_ids = set(dataset["Patient_name"])
 selected_patient = st.sidebar.selectbox('Patient ID', sorted(list(unique_patient_ids)))
 single_patient_df = extract_info(selected_patient, dataset)
+
+# Type of epilepsy
+st.sidebar.subheader('Classification: ')
+
+# Need for function that can extract the values form classifed_dataset
+
+epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list)
+keywords_input = st.sidebar.multiselect('Keywords input', tags_list)
+free_notes = st.sidebar.text_area('Free notes', classified_dataset[classified_dataset['Patient_name']==selected_patient]['Tags'].iloc[0])
 
 # Render report list + meta informations
 for index, row in single_patient_df.iterrows():
