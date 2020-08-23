@@ -100,6 +100,36 @@ def extract_info(selected_patient, dataset):
     single_patient_df = single_patient_df.sort_values(["Nb_Seizures", "Exam_name"], ascending = (False, True))
     return single_patient_df
 
+def default_value_listing(defaut_values_df):
+    
+    # Dealing with Seizure_type and Tags colums
+    default_list = []
+    columns = ['Seizure_type', 'Tags']
+
+    for col in columns:
+        element = defaut_values_df[col].iloc[0]
+        if pd.isnull(element):
+            element = None
+        else:
+            try:
+                element = element.split(', ')
+            except:
+                element = list(element)    
+        default_list.append(element)
+
+    # Adding free notes
+    element = defaut_values_df['Free_Notes'].iloc[0]
+    if pd.isnull(element):
+        element = ''
+    default_list.append(element)
+
+    return [element for element in default_list]      
+
+def extract_defaut_values(selected_patient, classified_dataset):
+    defaut_values_df = classified_dataset[classified_dataset["Patient_name"] == selected_patient]
+    default_epilepsy_type, default_tags, default_free_notes = default_value_listing(defaut_values_df)
+    return default_epilepsy_type, default_tags, default_free_notes
+
 # Creating the patient index selector in side menu
 st.sidebar.subheader('Select Patient ID')
 unique_patient_ids = set(dataset["Patient_name"])
@@ -108,12 +138,11 @@ single_patient_df = extract_info(selected_patient, dataset)
 
 # Type of epilepsy
 st.sidebar.subheader('Classification: ')
+default_epilepsy_type, default_tags, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
+epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
+keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
+free_notes = st.sidebar.text_area('Free notes', value=default_free_notes)
 
-# Need for function that can extract the values form classifed_dataset
-
-epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list)
-keywords_input = st.sidebar.multiselect('Keywords input', tags_list)
-free_notes = st.sidebar.text_area('Free notes', classified_dataset[classified_dataset['Patient_name']==selected_patient]['Tags'].iloc[0])
 
 # Render report list + meta informations
 for index, row in single_patient_df.iterrows():
