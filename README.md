@@ -1,13 +1,8 @@
 # manual_classification_help_app
 
-## Done
-- First running app loading the csv
-- Display of the reports by patients, hashtags and seizure type thanks to index for two patient ID (258, 2289)
+## Status
 
-## Next steps:
-- Export to csv of the results
-- Next button?
-- Better lisibility?
+App is availiable for testing!
 
 ## Acknowledgement
 Data samples are extracted from Temple University EEG Seizure corpus.
