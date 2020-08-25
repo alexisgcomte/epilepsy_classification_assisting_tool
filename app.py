@@ -155,13 +155,21 @@ def update_last_patient_classified(last_patient_classified_df, selected_patient)
     last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
 
 def update_last_patient_classified_next(last_patient_classified_df, selected_patient):
-    updated_patient = sorted_list[sorted_list.index(selected_patient) + 1]
+    if selected_patient == sorted_list[-1]:
+        updated_patient = sorted_list[sorted_list.index(selected_patient)]
+        st.sidebar.info('Last report completed!')
+    else:
+        updated_patient = sorted_list[sorted_list.index(selected_patient) + 1]
     last_patient_classified_df['last_patient_classified'].iloc[0] = updated_patient
     last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
     return updated_patient
 
 def update_last_patient_classified_previous(last_patient_classified_df, selected_patient):
-    updated_patient = sorted_list[sorted_list.index(selected_patient) -1]
+    if selected_patient == sorted_list[0]:
+        updated_patient = sorted_list[sorted_list.index(selected_patient)]
+        st.sidebar.info('First report :)')
+    else:
+        updated_patient = sorted_list[sorted_list.index(selected_patient) -1]
     last_patient_classified_df['last_patient_classified'].iloc[0] = updated_patient
     last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
     return updated_patient
