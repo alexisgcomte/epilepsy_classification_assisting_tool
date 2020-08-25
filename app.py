@@ -4,8 +4,6 @@ import numpy as np
 import re
 import ast
 
-st.title('Patient epilepsy classification')
-
 @st.cache
 def load_data():
     data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
@@ -43,6 +41,8 @@ epilepsy_type_list = load_epilepsy_types_list()
 
 # Notify the reader that the data was successfully loaded.
 data_load_state.success("Data Loaded in cache successfully!")
+
+st.title('Patient epilepsy classification')
 
 def create_highlighted_markdown_text(report, highlighted_information):
     #try :
@@ -171,7 +171,8 @@ def update_last_patient_classified_previous(last_patient_classified_df, selected
     return updated_patient
 
 def completion_status(epilepsy_type_input, keywords_input, free_notes_input):
-    status = 'Completed !'
+    status = 1
+    
     epilepsy_type_input = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
     keywords_input = re.sub(r"([\]\'\[])",'',str(keywords_input))
     free_notes_input = re.sub(r"([\]\'\[])",'',str(free_notes_input))
@@ -180,7 +181,7 @@ def completion_status(epilepsy_type_input, keywords_input, free_notes_input):
     and (len(keywords_input) == 0 or str(keywords_input) == 'None')
     and (len(free_notes_input) == 0 or str(free_notes_input) == 'None')
     ):
-        status = 'In progress'
+        status = 0
     return status
 
 # Creating the patient index selector in side menu
@@ -207,21 +208,29 @@ st.subheader('Current patient ID is: {}'.format(selected_patient))
 # Manual classification part
 
 default_epilepsy_type, default_tags, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
-status = completion_status(default_epilepsy_type, default_tags, default_free_notes)
-st.sidebar.subheader('Status: {}'.format(status))
 
 st.sidebar.subheader('Classification:')
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
 free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
 
+status = completion_status(default_epilepsy_type, default_tags, default_free_notes)
+
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input)
     classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False)
     update_last_patient_classified(last_patient_classified_df, selected_patient)
-
+    status = completion_status(epilepsy_type_input, keywords_input, free_notes_input)
     data_save_state = st.sidebar.info('Saving data...')
     data_save_state.success("Classification saved!")
+
+
+if status == 1:
+    st.subheader('Status: {}'.format('Classification completed'))
+    st.image('data/icons/correct.jpg', width = 150)
+else:
+    st.subheader('Status: {}'.format('Classification in progress'))
+    st.image('data/icons/incorrect.jpg', width = 150)
 
 # Render report list + meta informations
 for index, row in single_patient_df.iterrows():
