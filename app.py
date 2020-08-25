@@ -68,6 +68,7 @@ def create_highlighted_markdown_text(report, highlighted_information):
 
     # Keep newline in the markdown report
     report = re.sub("\n", "<br>", report)
+    report = bolded_tagged_sentenced(report)
     return report
 
     #except:
@@ -76,6 +77,16 @@ def create_highlighted_markdown_text(report, highlighted_information):
 
 def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
     return '<span style="background-color: '+ background_color +'; font-weight: '+ font_weight +';">'+ text +'</span>'
+
+def bolded_tagged_sentenced(report):
+    bolded_report = ''
+    for sentence in str(report).split('.'):
+        if re.search('<span style=', sentence):
+            sentence = str('**') + sentence + str('**.')
+        else:
+            sentence = sentence + '.'
+        bolded_report += sentence
+    return bolded_report
 
 def html_decorate_tag_list(tag_list):
     if pd.isnull(tag_list):
@@ -150,14 +161,11 @@ epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_typ
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
 free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
 
-
-
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input)
     classified_dataset.to_csv('data/classified_reports/classified_report_database.csv')
     data_save_state = st.sidebar.info('Saving data...')
     data_save_state.success("Classification saved!")
-
 
 # Render report list + meta informations
 for index, row in single_patient_df.iterrows():
