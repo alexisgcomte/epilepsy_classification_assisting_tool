@@ -11,7 +11,7 @@ def load_data():
     data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
     return data
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_classified_reports():
     data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding="iso-8859-1")
     return data
@@ -130,18 +130,33 @@ def extract_defaut_values(selected_patient, classified_dataset):
     default_epilepsy_type, default_tags, default_free_notes = default_value_listing(defaut_values_df)
     return default_epilepsy_type, default_tags, default_free_notes
 
+def update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input):
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Seizure_type'] = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Tags'] = re.sub(r"([\]\'\[])",'',str(keywords_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Free_Notes'] = free_notes_input
+
+    return classified_dataset
+
 # Creating the patient index selector in side menu
 st.sidebar.subheader('Select Patient ID')
 unique_patient_ids = set(dataset["Patient_name"])
 selected_patient = st.sidebar.selectbox('Patient ID', sorted(list(unique_patient_ids)))
 single_patient_df = extract_info(selected_patient, dataset)
 
-# Type of epilepsy
+# Manual classification part
 st.sidebar.subheader('Classification: ')
 default_epilepsy_type, default_tags, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
-free_notes = st.sidebar.text_area('Free notes', value=default_free_notes)
+free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
+
+
+
+if st.sidebar.button('Save'):
+    classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input)
+    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv')
+    data_save_state = st.sidebar.info('Saving data...')
+    data_save_state.success("Classification saved!")
 
 
 # Render report list + meta informations
