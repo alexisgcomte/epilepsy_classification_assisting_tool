@@ -170,6 +170,19 @@ def update_last_patient_classified_previous(last_patient_classified_df, selected
     last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
     return updated_patient
 
+def completion_status(epilepsy_type_input, keywords_input, free_notes_input):
+    status = 'Completed !'
+    epilepsy_type_input = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
+    keywords_input = re.sub(r"([\]\'\[])",'',str(keywords_input))
+    free_notes_input = re.sub(r"([\]\'\[])",'',str(free_notes_input))
+
+    if ((len(epilepsy_type_input) == 0 or str(epilepsy_type_input) == 'None')
+    and (len(keywords_input) == 0 or str(keywords_input) == 'None')
+    and (len(free_notes_input) == 0 or str(free_notes_input) == 'None')
+    ):
+        status = 'In progress'
+    return status
+
 # Creating the patient index selector in side menu
 
 unique_patient_ids = set(dataset["Patient_name"])
@@ -179,7 +192,6 @@ last_patient_classified_df, last_patient_classified = last_patient_classified()
 selected_patient = last_patient_classified
 
 st.sidebar.subheader('Patient ID navigation:')
-
 if st.sidebar.button('Next'):
     selected_patient = update_last_patient_classified_next(last_patient_classified_df, selected_patient)
 
@@ -189,11 +201,16 @@ if st.sidebar.button('Previous'):
 selected_patient = st.sidebar.selectbox('Manual Selection  ', sorted_list, index=sorted_list.index(selected_patient))
 
 single_patient_df = extract_info(selected_patient, dataset)
-st.sidebar.subheader('Current patient ID is: {}'.format(selected_patient))
+
+st.subheader('Current patient ID is: {}'.format(selected_patient))
 
 # Manual classification part
-st.sidebar.subheader('Classification:')
+
 default_epilepsy_type, default_tags, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
+status = completion_status(default_epilepsy_type, default_tags, default_free_notes)
+st.sidebar.subheader('Status: {}'.format(status))
+
+st.sidebar.subheader('Classification:')
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
 free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
