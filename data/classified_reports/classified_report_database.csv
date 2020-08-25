@@ -1,8 +1,8 @@
-,Unnamed: 0,Unnamed: 0.1,Unnamed: 0.1.1,Unnamed: 0.1.1.1,Patient_name,Tags,Seizure_type,Free_Notes
-0,0,0,0,0,6,"myoclonic absences, Rasmussen",Generalized,New test of free notes
-1,1,1,1,1,258,"tonic-clonic, temporal","Generalized, Focal",
-2,2,2,2,2,2051,,Focal,
-3,3,3,3,3,2056,,Focal,
-4,4,4,4,4,2289,"temporal lobe, central","Generalized, Focal",New note
-5,5,5,5,5,8204,,,
-6,6,6,6,6,10247,,,
+Patient_name,Tags,Seizure_type,Free_Notes
+6,Lennox-Gastaut,"Unkown, Generalized",Test free note 2
+258,"tonic-clonic, temporal",Generalized,Test 2
+2051,CAE,Focal,New test 4934
+2056,,Focal,
+2289,"temporal lobe, central","Generalized, Focal",
+8204,,,
+10247,,,

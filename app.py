@@ -28,6 +28,12 @@ def load_epilepsy_types_list():
     epilepsy_type_list = data['epilepsy_types'].tolist()
     return epilepsy_type_list
 
+@st.cache(allow_output_mutation=True)
+def last_patient_classified():
+    last_patient_classified_df = pd.read_csv('data/parameters/last_patient_classified.csv', encoding="iso-8859-1")
+    last_patient_classified = last_patient_classified_df['last_patient_classified'].iloc[0]
+    return last_patient_classified_df, last_patient_classified
+
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.info('Loading data...')
 dataset = load_data()
@@ -148,10 +154,22 @@ def update_classified_dataset(selected_patient, classified_dataset, epilepsy_typ
 
     return classified_dataset
 
+def update_last_patient_classified(last_patient_classified_df, selected_patient):
+    last_patient_classified_df['last_patient_classified'].iloc[0] = sorted_list[sorted_list.index(selected_patient)]
+    last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
+
+def update_last_patient_classified_next(last_patient_classified_df, selected_patient):
+    last_patient_classified_df['last_patient_classified'].iloc[0] = sorted_list[sorted_list.index(selected_patient) + 1]
+    last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
+
+    
 # Creating the patient index selector in side menu
 st.sidebar.subheader('Select Patient ID')
 unique_patient_ids = set(dataset["Patient_name"])
-selected_patient = st.sidebar.selectbox('Patient ID', sorted(list(unique_patient_ids)))
+sorted_list = sorted(list(unique_patient_ids))
+last_patient_classified_df, last_patient_classified = last_patient_classified()
+selected_patient = st.sidebar.selectbox('Patient ID', sorted_list, index=sorted_list.index(last_patient_classified))
+
 single_patient_df = extract_info(selected_patient, dataset)
 
 # Manual classification part
@@ -163,9 +181,19 @@ free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
 
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input)
-    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv')
+    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False)
+    update_last_patient_classified(last_patient_classified_df, selected_patient)
+
     data_save_state = st.sidebar.info('Saving data...')
     data_save_state.success("Classification saved!")
+# Experimentation
+age = st.slider('How old are you?', 0, 130, 25)
+st.write("I'm ", age, 'years old')
+
+number = st.number_input('Insert a number')
+import random
+number = random.randint(0,5)
+st.write('The current number is ', number)
 
 # Render report list + meta informations
 for index, row in single_patient_df.iterrows():
@@ -183,4 +211,13 @@ for index, row in single_patient_df.iterrows():
 
     #Display highlighted repport
     md_report = create_highlighted_markdown_text(row["Patient_report"], row["Highlighted_data"])
-    st.markdown(md_report, unsafe_allow_html=True)
+    st.markdown(md_report, unsafe_allow_html=True) 
+
+
+#if st.sidebar.button('Save and Next'):
+ #   classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input)
+  #  classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False)
+  #  update_last_patient_classified_next(last_patient_classified_df, last_patient_classified)
+  #  selected_patient = last_patient_classified
+  #  data_save_state = st.sidebar.info('Saving data...')
+  #  data_save_state.success("Classification saved!")
