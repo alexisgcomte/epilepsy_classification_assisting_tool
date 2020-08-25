@@ -33,7 +33,7 @@ def last_patient_classified():
     return last_patient_classified_df, last_patient_classified
 
 # Create a text element and let the reader know the data is loading.
-data_load_state = st.info('Loading data...')
+data_load_state = st.sidebar.info('Loading data...')
 dataset = load_data()
 classified_dataset = load_classified_reports()
 tags_list = load_tags_list()
@@ -76,10 +76,6 @@ def create_highlighted_markdown_text(report, highlighted_information):
     report = re.sub("\n", "<br>", report)
     report = bolded_tagged_sentenced(report)
     return report
-
-    #except:
-
-    #    return report
 
 def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
     return '<span style="background-color: '+ background_color +'; font-weight: '+ font_weight +';">'+ text +'</span>'
@@ -172,15 +168,9 @@ def update_last_patient_classified_previous(last_patient_classified_df, selected
 
 def completion_status(epilepsy_type_input, keywords_input, free_notes_input):
     status = 1
-    
     epilepsy_type_input = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
-    keywords_input = re.sub(r"([\]\'\[])",'',str(keywords_input))
-    free_notes_input = re.sub(r"([\]\'\[])",'',str(free_notes_input))
 
-    if ((len(epilepsy_type_input) == 0 or str(epilepsy_type_input) == 'None')
-    and (len(keywords_input) == 0 or str(keywords_input) == 'None')
-    and (len(free_notes_input) == 0 or str(free_notes_input) == 'None')
-    ):
+    if (len(epilepsy_type_input) == 0 or str(epilepsy_type_input) == 'None'):
         status = 0
     return status
 
