@@ -79,7 +79,7 @@ def defaut_value_listing(defaut_values_df):
     # Loading previously input datas
     # Dealing with Seizure_type and Tags colums
     default_list = []
-    columns = ['Seizure_type', 'Tags']
+    columns = ['Seizure_type', 'Tags', 'Laterality']
 
     for col in columns:
         element = defaut_values_df[col].iloc[0]
@@ -103,13 +103,14 @@ def defaut_value_listing(defaut_values_df):
 def extract_defaut_values(selected_patient, classified_dataset):
     # Extract previously input fields
     defaut_values_df = classified_dataset[classified_dataset["Patient_name"] == selected_patient]
-    default_epilepsy_type, default_tags, default_free_notes = defaut_value_listing(defaut_values_df)
-    return default_epilepsy_type, default_tags, default_free_notes
+    default_epilepsy_type, default_tags, default_laterality, default_free_notes = defaut_value_listing(defaut_values_df)
+    return default_epilepsy_type, default_tags, default_laterality, default_free_notes
 
-def update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input):
+def update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, free_notes_input):
     # Update the classification CSV with input values
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Seizure_type'] = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Tags'] = re.sub(r"([\]\'\[])",'',str(keywords_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Laterality'] = re.sub(r"([\]\'\[])",'',str(laterality_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Free_Notes'] = free_notes_input
     return classified_dataset
 
@@ -173,6 +174,12 @@ def load_epilepsy_types_list():
     epilepsy_type_list = data['epilepsy_types'].tolist()
     return epilepsy_type_list
 
+@st.cache
+def load_laterality_list():
+    data = pd.read_csv('data/parameters/laterality_list.csv', encoding="iso-8859-1")
+    laterality_list = data['laterality'].tolist()
+    return laterality_list
+
 #@st.cache(allow_output_mutation=True)
 def last_patient_classified():
     last_patient_classified_df = pd.read_csv('data/parameters/last_patient_classified.csv', encoding="iso-8859-1")
@@ -185,6 +192,7 @@ dataset = load_data()
 classified_dataset = load_classified_reports()
 tags_list = load_tags_list()
 epilepsy_type_list = load_epilepsy_types_list()
+laterality_list = load_laterality_list()
 
 # Notify the reader that the data was successfully loaded.
 data_load_state.success("Data Loaded in cache successfully!")
@@ -212,17 +220,18 @@ single_patient_df = extract_info(selected_patient, dataset)
 
 # Manual classification part
 
-default_epilepsy_type, default_tags, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
+default_epilepsy_type, default_tags, default_laterality, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
 
 st.sidebar.subheader('Classification:')
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
+laterality_input = st.sidebar.multiselect('Laterality input', laterality_list, default=default_laterality)
 free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
 
 status = completion_status(default_epilepsy_type)
 
 if st.sidebar.button('Save'):
-    classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, free_notes_input)
+    classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, free_notes_input)
     classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False)
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     # Checking if report is now completed
