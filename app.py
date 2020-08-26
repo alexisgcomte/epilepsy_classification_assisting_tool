@@ -6,7 +6,7 @@ import ast
 
 # FUNCTION DEFINITIONS
 
-def create_highlighted_markdown_text(report, highlighted_information):
+def create_highlighted_markdown_text(report, highlighted_information, neutral_tags_list):
     #try :
     # Initialization and parameters
     shift = 0
@@ -37,6 +37,7 @@ def create_highlighted_markdown_text(report, highlighted_information):
     # Keep newline in the markdown report
     report = re.sub("\n", "<br>", report)
     report = bolded_tagged_sentenced(report)
+    report = neutral_tags_addition(report, neutral_tags_list)
     return report
 
 def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
@@ -51,6 +52,15 @@ def bolded_tagged_sentenced(report):
             sentence = sentence + '.'
         bolded_report += sentence
     return bolded_report
+
+def neutral_tags_addition(report, neutral_tags_list):
+    updated_report = report
+    for neutral_tags in neutral_tags_list:
+      #  search = str('r'+"'\b[A-z]?\w"+neutral_tags+"'")
+        search = neutral_tags
+        updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
+      #  updated_report = re.sub(neutral_tags, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
+    return updated_report
 
 def html_decorate_tag_list(tag_list):
     if pd.isnull(tag_list):
@@ -180,6 +190,12 @@ def load_laterality_list():
     laterality_list = data['laterality'].tolist()
     return laterality_list
 
+@st.cache
+def load_neutral_tags_list():
+    data = pd.read_csv('data/parameters/neutral_tags_list.csv', encoding="iso-8859-1")
+    neutral_tags_list = data['neutral_tags'].tolist()
+    return neutral_tags_list
+
 #@st.cache(allow_output_mutation=True)
 def last_patient_classified():
     last_patient_classified_df = pd.read_csv('data/parameters/last_patient_classified.csv', encoding="iso-8859-1")
@@ -193,6 +209,7 @@ classified_dataset = load_classified_reports()
 tags_list = load_tags_list()
 epilepsy_type_list = load_epilepsy_types_list()
 laterality_list = load_laterality_list()
+neutral_tags_list = load_neutral_tags_list()
 
 # Notify the reader that the data was successfully loaded.
 data_load_state.success("Data Loaded in cache successfully!")
@@ -267,5 +284,5 @@ for index, row in single_patient_df.iterrows():
     st.write(html_decorate_tag_list(row["Seizure_type"]), unsafe_allow_html=True)
 
     #Display highlighted repport
-    md_report = create_highlighted_markdown_text(row["Patient_report"], row["Highlighted_data"])
+    md_report = create_highlighted_markdown_text(row["Patient_report"], row["Highlighted_data"], neutral_tags_list)
     st.markdown(md_report, unsafe_allow_html=True)
