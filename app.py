@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import re
 import ast
+import glob
+from datetime import datetime
 
 # FUNCTION DEFINITIONS
 
@@ -163,13 +165,23 @@ def completion_status(epilepsy_type_input):
 # LOADING THE DATAS
 
 @st.cache
+def update_save_path():
+    now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+    save_path = ('data/classified_reports/classified_report_database - {}.csv').format(now)
+    return save_path
+
+@st.cache
 def load_data():
     data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
     return data
 
 #@st.cache(allow_output_mutation=True)
-def load_classified_reports():
-    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding="iso-8859-1")
+def load_classified_reports(save_path):
+    files = [f for f in glob.glob('data/classified_reports' + "**/*.csv", recursive=True)]
+    files.sort()
+    last_report_path = files[-1]
+    data = pd.read_csv(last_report_path, encoding="iso-8859-1")
+    data.to_csv(save_path, index=False)
     return data
 
 @st.cache
@@ -204,8 +216,9 @@ def last_patient_classified():
 
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.sidebar.info('Loading data...')
+save_path = update_save_path()
 dataset = load_data()
-classified_dataset = load_classified_reports()
+classified_dataset = load_classified_reports(save_path)
 tags_list = load_tags_list()
 epilepsy_type_list = load_epilepsy_types_list()
 laterality_list = load_laterality_list()
@@ -225,7 +238,6 @@ selected_patient = last_patient_classified
 # Patient ID navigation
 
 st.sidebar.subheader('Patient ID navigation:')
-
 if st.sidebar.button('Next'):
     selected_patient = update_last_patient_classified_next(last_patient_classified_df, selected_patient)
 
@@ -249,7 +261,7 @@ status = completion_status(default_epilepsy_type)
 
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, free_notes_input)
-    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False)
+    classified_dataset.to_csv(save_path, index=False)
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     # Checking if report is now completed
     status = completion_status(epilepsy_type_input)

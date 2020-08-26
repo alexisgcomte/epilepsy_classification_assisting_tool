@@ -3,6 +3,6 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes
 258,"tonic-clonic, temporal","Generalized, Focal",,
 2051,,Focal,,
 2056,,Focal,,
-2289,"temporal lobe, central, temporal","Generalized, Focal","Left, Right",
+2289,"temporal lobe, central, temporal","Generalized, Focal",Left,
 8204,,,,
 10247,,,Right,
