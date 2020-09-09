@@ -27,13 +27,21 @@ def create_highlighted_markdown_text(report, highlighted_information, neutral_ta
     df_highlighted_batch.sort_values(by="coordinates", inplace=True) # for highlighting in order of position
 
     # Updating the report
-    for i in range(df_highlighted_batch.shape[0]):
-        word = df_highlighted_batch['word'].iloc[i]
-        index = df_highlighted_batch['coordinates'].iloc[i]
+    #for i in range(df_highlighted_batch.shape[0]):
+     #   word = df_highlighted_batch['word'].iloc[i]
+      #  index = df_highlighted_batch['coordinates'].iloc[i]
+
+     #   decorate_word = html_decorate_text(word, background_color="#FFFF00")
+     #   report = report[:index + shift] + decorate_word + report[len(report[:index + shift] + word):]
+     #   shift += len(decorate_word) - len(word)
+    n = df_highlighted_batch.shape[0]
+    for i in range(n):
+        word = df_highlighted_batch['word'].iloc[n-i-1]
+        index = df_highlighted_batch['coordinates'].iloc[n-i-1]
 
         decorate_word = html_decorate_text(word, background_color="#FFFF00")
-        report = report[:index + shift] + decorate_word + report[len(report[:index + shift] + word):]
-        shift += len(decorate_word) - len(word)
+        report = report[:index] + decorate_word + report[len(report[:index] + word):]
+        
 
     # Keep newline in the markdown report
     report = re.sub("\n", "<br>", report)
