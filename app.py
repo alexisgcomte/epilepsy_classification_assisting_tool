@@ -263,6 +263,11 @@ if st.sidebar.button('Previous'):
 
 selected_patient = st.sidebar.selectbox('Manual Selection  ', sorted_list, index=sorted_list.index(selected_patient))
 single_patient_df = extract_info(selected_patient, dataset)
+show_only_epilepsy = st.sidebar.checkbox('Show only epilepsy reports', value=0)
+if show_only_epilepsy == 1:
+    single_patient_df = single_patient_df[single_patient_df["Nb_Seizures"] > 0]
+
+
 
 # Manual classification part
 
@@ -311,7 +316,12 @@ else:
     st.image('data/icons/incorrect.jpg', width = 150)
 
 # Render report list + meta informations
+
+# Filtering filters with reports
+
+
 for index, row in single_patient_df.iterrows():
+
     st.header('Report #' + index)
 
     # Display of the informative elements
