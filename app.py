@@ -33,7 +33,6 @@ def create_highlighted_markdown_text(report, highlighted_information, neutral_ta
 
         decorate_word = html_decorate_text(word, background_color="#FFFF00")
         report = report[:index + shift] + decorate_word + report[len(report[:index + shift] + word):]
-
         shift += len(decorate_word) - len(word)
 
     # Keep newline in the markdown report
@@ -58,10 +57,17 @@ def bolded_tagged_sentenced(report):
 def neutral_tags_addition(report, neutral_tags_list):
     updated_report = report
     for neutral_tags in neutral_tags_list:
-      #  search = str('r'+"'\b[A-z]?\w"+neutral_tags+"'")
         search = neutral_tags
         updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
-      #  updated_report = re.sub(neutral_tags, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
+     
+        #search = '(\w*)?({})\w*'.format(neutral_tags)
+        #updated_report = re.sub(neutral_tags, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
+
+      # with capital letter
+        #maj_neutral_tags = str(neutral_tags[:1].upper()+neutral_tags[1:])
+        #search = maj_neutral_tags
+        #search = '\w*({})\w*'.format(maj_neutral_tags)
+        #updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
     return updated_report
 
 def html_decorate_tag_list(tag_list):
@@ -173,6 +179,7 @@ def update_save_path():
 @st.cache
 def load_data():
     data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
+    #data = pd.read_csv('data/structured_reports/Annotated_reports_database_tagged_v0.2 + tags utf8.csv', encoding='utf8', sep=";")
     return data
 
 #@st.cache(allow_output_mutation=True)
