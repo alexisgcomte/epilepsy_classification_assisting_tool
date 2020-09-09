@@ -1,8 +1,0 @@
-Patient_name,Tags,Seizure_type,Laterality,Free_Notes
-6,,,,Test free note
-258,"tonic-clonic, temporal, Lennox-Gastaut","Generalized, Focal",,TEST 258
-2051,,Focal,,TEST 2051
-2056,,Focal,,Test 2056 2
-2289,"temporal lobe, central, temporal","Generalized, Focal",Right,A  
-8204,Lennox-Gastaut,,"Left, Unkown",Test 2057 valide
-10247,Lennox-Gastaut,Generalized,Right,10247

@@ -97,7 +97,7 @@ def defaut_value_listing(defaut_values_df):
     # Loading previously input datas
     # Dealing with Seizure_type and Tags colums
     default_list = []
-    columns = ['Seizure_type', 'Tags', 'Laterality']
+    columns = ['Seizure_type', 'Tags', 'Laterality', 'thesaurus']
 
     for col in columns:
         element = defaut_values_df[col].iloc[0]
@@ -121,14 +121,15 @@ def defaut_value_listing(defaut_values_df):
 def extract_defaut_values(selected_patient, classified_dataset):
     # Extract previously input fields
     defaut_values_df = classified_dataset[classified_dataset["Patient_name"] == selected_patient]
-    default_epilepsy_type, default_tags, default_laterality, default_free_notes = defaut_value_listing(defaut_values_df)
-    return default_epilepsy_type, default_tags, default_laterality, default_free_notes
+    default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = defaut_value_listing(defaut_values_df)
+    return default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes
 
 def update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, free_notes_input):
     # Update the classification CSV with input values
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Seizure_type'] = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Tags'] = re.sub(r"([\]\'\[])",'',str(keywords_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Laterality'] = re.sub(r"([\]\'\[])",'',str(laterality_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'thesaurus'] = re.sub(r"([\]\\[])",'',str(thesaurus_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Free_Notes'] = free_notes_input
     return classified_dataset
 
@@ -158,13 +159,15 @@ def update_last_patient_classified_previous(last_patient_classified_df, selected
     last_patient_classified_df['last_patient_classified'].iloc[0] = updated_patient
     last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
     return updated_patient
-
-def completion_status(epilepsy_type_input):
+###
+# TO UPDATE
+###
+def completion_status(thesaurus_input):
     # Return 1 of Epilepsy type is incomplete, else 0
     status = 1
-    epilepsy_type_input = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
+    thesaurus_input = re.sub(r"([\]\'\[])",'',str(thesaurus_input))
 
-    if (len(epilepsy_type_input) == 0 or str(epilepsy_type_input) == 'None'):
+    if (len(thesaurus_input) == 0 or str(thesaurus_input) == 'None'):
         status = 0
     return status
 
@@ -215,6 +218,12 @@ def load_neutral_tags_list():
     neutral_tags_list = data['neutral_tags'].tolist()
     return neutral_tags_list
 
+@st.cache
+def load_thesaurus_list():
+    data = pd.read_csv('data/parameters/thesaurus_list.csv', encoding="iso-8859-1")
+    thesaurus_list = data['thesaurus'].tolist()
+    return thesaurus_list
+
 #@st.cache(allow_output_mutation=True)
 def last_patient_classified():
     last_patient_classified_df = pd.read_csv('data/parameters/last_patient_classified.csv', encoding="iso-8859-1")
@@ -230,6 +239,7 @@ tags_list = load_tags_list()
 epilepsy_type_list = load_epilepsy_types_list()
 laterality_list = load_laterality_list()
 neutral_tags_list = load_neutral_tags_list()
+thesaurus_list = load_thesaurus_list()
 
 # Notify the reader that the data was successfully loaded.
 data_load_state.success("Data Loaded in cache successfully!")
@@ -256,22 +266,34 @@ single_patient_df = extract_info(selected_patient, dataset)
 
 # Manual classification part
 
-default_epilepsy_type, default_tags, default_laterality, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
+default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
 
-st.sidebar.subheader('Classification:')
+st.sidebar.subheader('Information:')
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
 laterality_input = st.sidebar.multiselect('Laterality input', laterality_list, default=default_laterality)
 free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes)
 
-status = completion_status(default_epilepsy_type)
+
+
+st.sidebar.subheader('Classification:')
+
+def index_thesaurus_list(default_thesaurus):
+    if default_thesaurus is None:
+        return thesaurus_list[0]
+    else:
+        return re.sub(r"([\]\'\[])",'',str(default_thesaurus))
+
+thesaurus_input = st.sidebar.selectbox('Epilepsy Classification ', thesaurus_list, index=thesaurus_list.index(index_thesaurus_list(default_thesaurus)))
+
+status = completion_status(default_thesaurus)
 
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, free_notes_input)
     classified_dataset.to_csv(save_path, index=False)
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     # Checking if report is now completed
-    status = completion_status(epilepsy_type_input)
+    status = completion_status(thesaurus_input)
 
     data_save_state = st.sidebar.info('Saving data...')
     data_save_state.success("Classification saved!")
