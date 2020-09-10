@@ -11,7 +11,6 @@ from datetime import datetime
 def create_highlighted_markdown_text(report, highlighted_information, neutral_tags_list):
     #try :
     # Initialization and parameters
-    shift = 0
     if pd.isnull(highlighted_information):
         report = re.sub("\n", "<br>", report)
         return report
@@ -34,14 +33,21 @@ def create_highlighted_markdown_text(report, highlighted_information, neutral_ta
      #   decorate_word = html_decorate_text(word, background_color="#FFFF00")
      #   report = report[:index + shift] + decorate_word + report[len(report[:index + shift] + word):]
      #   shift += len(decorate_word) - len(word)
-    n = df_highlighted_batch.shape[0]
-    for i in range(n):
-        word = df_highlighted_batch['word'].iloc[n-i-1]
-        index = df_highlighted_batch['coordinates'].iloc[n-i-1]
+    #n = df_highlighted_batch.shape[0]
+    #for i in range(n):
+    #    word = df_highlighted_batch['word'].iloc[n-i-1]
+    #    index = df_highlighted_batch['coordinates'].iloc[n-i-1]
+    #    decorate_word = html_decorate_text(word, background_color="#FFFF00")
+    #    report = report[:index] + decorate_word + report[len(report[:index] + word):]
 
+    # changing for regex
+    word_list =  df_highlighted_batch['word'].unique()
+    word_list.sort()    
+    # To prevent double <>
+    for word in word_list:
         decorate_word = html_decorate_text(word, background_color="#FFFF00")
-        report = report[:index] + decorate_word + report[len(report[:index] + word):]
-        
+        report = re.sub(' '+word+' ', ' '+decorate_word+' ', report) 
+
 
     # Keep newline in the markdown report
     report = re.sub("\n", "<br>", report)
@@ -56,7 +62,7 @@ def bolded_tagged_sentenced(report):
     bolded_report = ''
     for sentence in str(report).split('.'):
         if re.search('<span style=', sentence):
-            sentence = str('**') + sentence + str('**.')
+            sentence = str('**') + sentence + str('**.') 
         else:
             sentence = sentence + '.'
         bolded_report += sentence
@@ -128,7 +134,7 @@ def defaut_value_listing(defaut_values_df):
 
 def extract_defaut_values(selected_patient, classified_dataset):
     # Extract previously input fields
-    defaut_values_df = classified_dataset[classified_dataset["Patient_name"] == selected_patient]
+    defaut_values_df = classified_dataset[classified_dataset["Patient_name"] == str(selected_patient)]
     default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = defaut_value_listing(defaut_values_df)
     return default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes
 
@@ -189,8 +195,8 @@ def update_save_path():
 
 @st.cache
 def load_data():
-    data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
-    #data = pd.read_csv('data/structured_reports/Annotated_reports_database_tagged_v0.2 + tags utf8.csv', encoding='utf8', sep=";")
+    #data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
+    data = pd.read_csv('data/structured_reports/Annotated_reports_database_tagged_v0.2 tag utf-8.csv', encoding='utf8', sep=";")
     return data
 
 #@st.cache(allow_output_mutation=True)
@@ -274,7 +280,6 @@ single_patient_df = extract_info(selected_patient, dataset)
 show_only_epilepsy = st.sidebar.checkbox('Show only epilepsy reports', value=0)
 if show_only_epilepsy == 1:
     single_patient_df = single_patient_df[single_patient_df["Nb_Seizures"] > 0]
-
 
 
 # Manual classification part
