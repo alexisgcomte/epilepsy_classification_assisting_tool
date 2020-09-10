@@ -195,17 +195,19 @@ def update_save_path():
 
 @st.cache
 def load_data():
-    #data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
-    data = pd.read_csv('data/structured_reports/Annotated_reports_database_tagged_v0.2 tag utf-8.csv', encoding='utf8', sep=";")
+    data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding="iso-8859-1")
+    #data = pd.read_csv('data/structured_reports/Annotated_reports_database_tagged_v0.2 tag utf-8.csv', encoding='utf8', sep=";")
+    return data
+
+@st.cache
+def load_classified_reports_first(save_path):
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding="iso-8859-1")
+    data.to_csv(save_path, index=False)
     return data
 
 #@st.cache(allow_output_mutation=True)
 def load_classified_reports(save_path):
-    files = [f for f in glob.glob('data/classified_reports' + "**/*.csv", recursive=True)]
-    files.sort()
-    last_report_path = files[-1]
-    data = pd.read_csv(last_report_path, encoding="iso-8859-1")
-    data.to_csv(save_path, index=False)
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding="iso-8859-1")
     return data
 
 @st.cache
@@ -248,6 +250,7 @@ def last_patient_classified():
 data_load_state = st.sidebar.info('Loading data...')
 save_path = update_save_path()
 dataset = load_data()
+classified_dataset = load_classified_reports_first(save_path)
 classified_dataset = load_classified_reports(save_path)
 tags_list = load_tags_list()
 epilepsy_type_list = load_epilepsy_types_list()
@@ -308,7 +311,7 @@ status = completion_status(default_thesaurus)
 
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, free_notes_input)
-    classified_dataset.to_csv(save_path, index=False)
+    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False)
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     # Checking if report is now completed
     status = completion_status(thesaurus_input)
