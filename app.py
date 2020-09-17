@@ -5,58 +5,60 @@ import re
 import ast
 import glob
 from datetime import datetime
+from fuzzywuzzy import fuzz
 
 # FUNCTION DEFINITIONS
 
-def create_highlighted_markdown_text(report, highlighted_information, neutral_tags_list):
-    #try :
-    # Initialization and parameters
-    if pd.isnull(highlighted_information):
+def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list):
+    try:
+        # Keep newline in the markdown report
+
+        keyword_list, targets_list = levenshtein_extraction(report, target_tags_list, 90)
+        report = tags_underlining(report, targets_list, background_color = "#FFFF00")
+
         report = re.sub("\n", "<br>", report)
-        return report
-
-    # Creating a dataset of the elements to highlight
-    df_highlighted_batch = pd.DataFrame(columns=['word','coordinates'])
-
-    for highlighted_info in ast.literal_eval(highlighted_information):
-        words = highlighted_info[0]
-        index = highlighted_info[1]
-        for i in range(len(words)):
-            df_highlighted_batch = df_highlighted_batch.append({'word':words[i], 'coordinates':index[i]}, ignore_index=True)
-    df_highlighted_batch.sort_values(by="coordinates", inplace=True) # for highlighting in order of position
-
-    # Updating the report
-    #for i in range(df_highlighted_batch.shape[0]):
-     #   word = df_highlighted_batch['word'].iloc[i]
-      #  index = df_highlighted_batch['coordinates'].iloc[i]
-
-     #   decorate_word = html_decorate_text(word, background_color="#FFFF00")
-     #   report = report[:index + shift] + decorate_word + report[len(report[:index + shift] + word):]
-     #   shift += len(decorate_word) - len(word)
-    #n = df_highlighted_batch.shape[0]
-    #for i in range(n):
-    #    word = df_highlighted_batch['word'].iloc[n-i-1]
-    #    index = df_highlighted_batch['coordinates'].iloc[n-i-1]
-    #    decorate_word = html_decorate_text(word, background_color="#FFFF00")
-    #    report = report[:index] + decorate_word + report[len(report[:index] + word):]
-
-    # changing for regex
-    word_list =  df_highlighted_batch['word'].unique()
-    word_list.sort()    
-    # To prevent double <>
-    for word in word_list:
-        decorate_word = html_decorate_text(word, background_color="#FFFF00")
-        report = re.sub(' '+word+' ', ' '+decorate_word+' ', report) 
-
-
-    # Keep newline in the markdown report
-    report = re.sub("\n", "<br>", report)
-    report = bolded_tagged_sentenced(report)
-    report = neutral_tags_addition(report, neutral_tags_list)
-    return report
+        
+        report = bolded_tagged_sentenced(report)
+        report = tags_underlining(report, neutral_tags_list, background_color = "#00ecff")
+        return report, keyword_list
+    except:
+        return('ERROR WITH KEYWORDS \n \n'+report)
 
 def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
     return '<span style="background-color: '+ background_color +'; font-weight: '+ font_weight +';">'+ text +'</span>'
+
+# For the title
+def epilepsy_type_correspondance(tags):
+    return 0
+
+def levenshtein_extraction(report, tags_targets, threshold):
+    keyword_list = []
+    targets_list = []
+    for  tag_target in tags_targets:
+        for i in report.split('.'):
+                if fuzz.partial_ratio(i.lower(), tag_target.lower()) >= threshold:
+                    for j in re.split(';|,|:| |:|-',i):
+                        # CONFIRM PARTIAL RATIO
+                        if fuzz.partial_ratio(j.lower(), tag_target.lower()) >= threshold and len(j)>4:
+                            keyword_list.append(tag_target)
+                            targets_list.append(j)
+    keyword_list = list(set(keyword_list))
+    targets_list = targets_list = list(set(targets_list))
+    
+    return keyword_list, targets_list
+
+def crisis_type_correspondance(target_tags_list, correspondance_dataset):
+    crisis_type_list = []
+
+    for target in target_tags_list:
+        try:
+            crisis_type = correspondance_dataset[correspondance_dataset['symptome-en-simple'] == target]['type of crisis'].iloc[0]
+            if crisis_type not in crisis_type_list:
+                crisis_type_list.append(crisis_type)
+        except:
+            pass
+    crisis_type_list = [crisis_type for crisis_type in crisis_type_list if str(crisis_type) != 'nan']
+    return crisis_type_list
 
 def bolded_tagged_sentenced(report):
     bolded_report = ''
@@ -68,28 +70,30 @@ def bolded_tagged_sentenced(report):
         bolded_report += sentence
     return bolded_report
 
-def neutral_tags_addition(report, neutral_tags_list):
+
+def tags_underlining(report, neutral_tags_list, background_color = "#DDDDDD"):
     updated_report = report
     for neutral_tags in neutral_tags_list:
         search = neutral_tags
-        updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
+        updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color=background_color), updated_report)
      
-        #search = '(\w*)?({})\w*'.format(neutral_tags)
-        #updated_report = re.sub(neutral_tags, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
-
-      # with capital letter
-        #maj_neutral_tags = str(neutral_tags[:1].upper()+neutral_tags[1:])
-        #search = maj_neutral_tags
-        #search = '\w*({})\w*'.format(maj_neutral_tags)
-        #updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color='#00ecff'), updated_report)
     return updated_report
 
-def html_decorate_tag_list(tag_list):
+# TO DELETE
+def html_decorate_tag_list_2(tag_list):
     if pd.isnull(tag_list):
         return tag_list
     else:
         tag_list_content = str(tag_list).split(",")
         tag_list_content = [html_decorate_text(content) for content in tag_list_content]
+        tag_list_content = ", ".join(tag_list_content)
+        return tag_list_content
+
+def html_decorate_tag_list(tag_list):
+    if len(tag_list) == 0:
+        return tag_list
+    else:
+        tag_list_content = [html_decorate_text(content) for content in tag_list]
         tag_list_content = ", ".join(tag_list_content)
         return tag_list_content
 
@@ -240,6 +244,12 @@ def load_thesaurus_list():
     thesaurus_list = data['thesaurus'].tolist()
     return thesaurus_list
 
+@st.cache
+def simplified_key_words():
+    correspondance_dataset = pd.read_csv('data/parameters/simplified_key_words.csv', encoding="utf-8")
+    target_tags_list = correspondance_dataset['symptome-en-simple'].tolist()
+    return target_tags_list, correspondance_dataset
+
 #@st.cache(allow_output_mutation=True)
 def last_patient_classified():
     last_patient_classified_df = pd.read_csv('data/parameters/last_patient_classified.csv', encoding="iso-8859-1")
@@ -258,6 +268,8 @@ laterality_list = load_laterality_list()
 neutral_tags_list = load_neutral_tags_list()
 thesaurus_list = load_thesaurus_list()
 
+target_tags_list, correspondance_dataset = simplified_key_words()
+
 # Notify the reader that the data was successfully loaded.
 data_load_state.success("Data Loaded in cache successfully!")
 
@@ -270,7 +282,6 @@ last_patient_classified_df, last_patient_classified = last_patient_classified()
 selected_patient = last_patient_classified
 
 # Patient ID navigation
-
 st.sidebar.subheader('Patient ID navigation:')
 if st.sidebar.button('Next'):
     selected_patient = update_last_patient_classified_next(last_patient_classified_df, selected_patient)
@@ -343,12 +354,18 @@ for index, row in single_patient_df.iterrows():
     st.subheader("Seizure during the exam:")
     st.write(html_decorate_text("YES", background_color="#66CD00") if row["Nb_Seizures"] > 0 else html_decorate_text("NO", background_color="#FF7F7F"), unsafe_allow_html=True)
 
+    md_report, keyword_list = create_highlighted_markdown_text(row["Patient_report"], target_tags_list, neutral_tags_list)
+
     st.subheader('Tags')
-    st.write(html_decorate_tag_list(row["Tags"]), unsafe_allow_html=True)
+    st.write(html_decorate_tag_list(keyword_list), unsafe_allow_html=True)
     
     st.subheader('Suggestion of seizure type')
-    st.write(html_decorate_tag_list(row["Seizure_type"]), unsafe_allow_html=True)
+    crisis_type_list = crisis_type_correspondance(keyword_list, correspondance_dataset)
+
+    #st.write(html_decorate_tag_list_2(row["Seizure_type"]), unsafe_allow_html=True)
+    st.write(html_decorate_tag_list(crisis_type_list) , unsafe_allow_html=True)
+
 
     #Display highlighted repport
-    md_report = create_highlighted_markdown_text(row["Patient_report"], row["Highlighted_data"], neutral_tags_list)
+
     st.markdown(md_report, unsafe_allow_html=True)
