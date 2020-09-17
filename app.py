@@ -11,6 +11,9 @@ from datetime import datetime
 def create_highlighted_markdown_text(report, highlighted_information, neutral_tags_list):
     #try :
     # Initialization and parameters
+
+    # TO DELETE
+
     if pd.isnull(highlighted_information):
         report = re.sub("\n", "<br>", report)
         return report
@@ -50,6 +53,7 @@ def create_highlighted_markdown_text(report, highlighted_information, neutral_ta
 
 
     # Keep newline in the markdown report
+    report = levenshtein_highlight(report)
     report = re.sub("\n", "<br>", report)
     report = bolded_tagged_sentenced(report)
     report = neutral_tags_addition(report, neutral_tags_list)
@@ -57,6 +61,9 @@ def create_highlighted_markdown_text(report, highlighted_information, neutral_ta
 
 def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
     return '<span style="background-color: '+ background_color +'; font-weight: '+ font_weight +';">'+ text +'</span>'
+
+def levenshtein_highlight(report):
+    return report
 
 def bolded_tagged_sentenced(report):
     bolded_report = ''
