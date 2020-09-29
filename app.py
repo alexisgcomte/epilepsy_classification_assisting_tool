@@ -14,12 +14,13 @@ def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list
         # Keep newline in the markdown report
 
         keyword_list, targets_list = levenshtein_extraction(report, target_tags_list, 90)
+        targets_list.sort(key=len);
         report = tags_underlining(report, targets_list, background_color = "#FFFF00")
 
-        report = re.sub("\n", "<br>", report)
         
         report = bolded_tagged_sentenced(report)
         report = tags_underlining(report, neutral_tags_list, background_color = "#00ecff")
+        report = re.sub("\n", "<br>", report)
         return report, keyword_list
     except:
         return('ERROR WITH KEYWORDS \n \n'+report)
