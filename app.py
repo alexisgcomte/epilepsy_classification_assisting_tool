@@ -18,8 +18,9 @@ def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list
         report = tags_underlining(report, targets_list, background_color = "#FFFF00")
 
         
-        report = bolded_tagged_sentenced(report)
+        #report = bolded_tagged_sentenced(report)
         report = tags_underlining(report, neutral_tags_list, background_color = "#00ecff")
+        report = bolded_tagged_sentenced(report)
         report = re.sub("\n", "<br>", report)
         return report, keyword_list
     except:
