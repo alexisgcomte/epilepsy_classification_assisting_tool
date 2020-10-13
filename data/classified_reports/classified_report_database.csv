@@ -1,12 +1,12 @@
 Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 2,,,,,,
-6,,,,test,E1 - Encephalopathie myoclonique precoce,1.0
+6,Ohtahara,Focal,"Unkown, Right", gvdfgdfgfdg ,E1 - Encephalopathie myoclonique precoce,1.0
 17,,,,,,
-21,,,,,,
+21,EME,Focal,Right, Nouveau test,E1 - Encephalopathie myoclonique precoce,1.0
 32,,,,,,
-54,,,,,,
-77,,,,,,
-107,,,,,,
+54,,Focal,, ,E1 - Encephalopathie myoclonique precoce,1.0
+77,"BFNE, infantile",Generalized,, ,E33 - Epilepsie benigne du nourisson,1.0
+107,,,,,E1 - Encephalopathie myoclonique precoce,1.0
 143,,,,,,
 148,,,,,,
 175,,,,,,
@@ -111,15 +111,15 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 1820,,,,,,
 1843,,,,,,
 1851,,,,,,
-1864,,,,,,
+1864,,Focal,, ,E1 - Encephalopathie myoclonique precoce,1.0
 1878,,,,,,
 1891,,,,,,
 1944,,,,,,
 1945,,,,,,
-1981,,,,,,
+1981,,,,sdfsd ,E1 - Encephalopathie myoclonique precoce,1.0
 1984,,,,,,
 1986,,,,,,
-2000,,,,,,
+2000,,Generalized,, test,E1 - Encephalopathie myoclonique precoce,1.0
 2021,,,,,,
 2042,,,,,,
 2044,,,,,,

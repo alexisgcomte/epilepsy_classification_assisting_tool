@@ -2,3 +2,4 @@ general_jupyter_notebook.ipynb
 env_streamlit/
 data/structured_reports/Annotated_reports_database_tagged_v0.2 + tags utf8.csv
 misc/
+data/classified_reports/classified_report_database - *
