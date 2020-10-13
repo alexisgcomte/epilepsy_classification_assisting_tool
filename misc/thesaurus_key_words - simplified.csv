@@ -1,0 +1,47 @@
+classification_E;catégorie;symptome-fr;symptome-en;symptome-en-simple;type of crisis;Comments;CIM_10;CIM11;Orphanet
+E1;Période néonatale;Encéphalopathie myoclonique précoce;Benign familial neonatal epilepsy (BFNE);BFNE;;Too much common words, keeping acronym;G40.8;8A61.0Y;1935
+E2;Période néonatale;Epilepsie néonatale familiale bénigne (BFNE);Early myoclonic encephalopathy (EME);EME;;Too much common words, keeping acronym;G40.8;8A61.10;1949
+E3;Période néonatale;Syndrome d'ohtahara;Ohtahara syndrome;Ohtahara;;syndrome is too common;G40.8;8A62.Y;1934
+E31;Nourrisons;Encépahlopathie myoclonique des affections non progressives;Myoclonic encephalopathy in nonprogressive disorders;Myoclonic encephalopathy;;simplification;G40.4;8A62.Y;86913
+E33;Nourrisons;Epilepsie benigne du nourisson;Benign infantile epilepsy;infantile;;generalisation;G40.3;8A61.1Z;166302
+E34;Nourrisons;Epilepsie du nourisson avec crises migrantes;Epilepsy of infancy with migrating focal seizures;migrating focal;;simplification;G40.8;8A61.12;1943
+E35;Nourrisons;Epilepsie familiale benigne du nourisson;Benign familial infantile epilepsy;Unkown;;;G40.3;8A61.10;306
+E36;Nourrisons;Epilepsie myoclonique du nourrisson;Myoclonic epilepsy in infancy (MEI);MEI;;Too much common words, keeping acronym;G40.3;8A61.2Y;33069
+E37;Nourrisons;Syndrome de Dravet;Dravet syndrome;Dravet;;Dravet;G40.8;8A61.11;33069
+E38;Nourrisons;Syndrome de West;West syndrome;West;;West;G40.4;8A62.0;3451
+E53;Enfants;"Epilepsie à crises myoclono-atoniques (précédement astatique; Sd de DOOSE)";Epilepsy with myoclonic atonic (previously astatic) seizures;myoclonic atonic;Generalized;myoclonic atonic;G40.4;8A61.22;1942
+E54;Enfants;Epilepsie à crises occipitales de début tardif (type Gastaut);Late onset childhood occipital epilepsy (Gastaut type);Gastaut type;focal;Gastaut type;G40.0;8A61.2Y;98816
+E55;Enfants;Epilepsie absence de l'enfant;Childhood absence epilepsy (CAE);CAE;Generalized;CAE;G40.3;8A61.21;64280
+E56;Enfants;Epilepsie absence de l'enfant début précoce < 5 ans;Childhood absence epilepsy (CAE);CAE;Generalized;CAE;G40.3;8A61.21;64280
+E57;Enfants;Epilepsie avec absences myocloniques;Epilepsy with myoclonic absences;myoclonic absences;Generalized;myoclonic absences;G40.3;8A61.23;86911
+E60;Enfants;Syndrome de Landau-Kleffner;Landau-Kleffner syndrome (LKS);Landau-Kleffner;;Landau-Kleffner;F80.3;8A62.2;98818
+E61;Enfants;Syndrome de Lennox-Gastaut;Lennox-Gastaut syndrome;Lennox-Gastaut;Generalized;Lennox-Gastaut;G40.4;8A62.1;2382
+E62;Enfants;Syndrome de Panayiotopoulos;Panayiotopoulos syndrome;Panayiotopoulos;;Panayiotopoulos;G40.8;8A61.2Y;98815
+E70;Adolescents-Adultes;Autres formes d'épilepsie temporale familiale;Other familial temporal lobe epilepsies;temporal lobe;Generalized;temporal lobe;G40.0;??;0
+E71;Adolescents-Adultes;Epilepsie à crises généralisées tonico-cloniques prédominantes;Epilepsy with generalized tonic–clonic seizures alone;tonic-clonic;Generalized;tonic-clonic;G40.3;8A68.4;0
+E72;Adolescents-Adultes;Epilepsie absence de l'adolescent;Juvenile absence epilepsy (JAE);jAE;Generalized;jAE;G40.3;8A61.31;64280
+E73;Adolescents-Adultes;Epilepsie avec crises à symptomatologie auditive autosomique dominante (ADEAF);Autosomal dominant epilepsy with auditory features (ADEAF);ADEAF;;ADEAF;G40.0;8A61.3Y;0
+E74;Adolescents-Adultes;Epilepsie myoclonique Juvénile;Juvenile myoclonic epilepsy (JME);JME;Generalized;JME;G40.3;8A61.30;307
+E90;Non liés à l'âge;Crises gélastiques sur hamartome hypothalamique;Gelastic seizures with hypothalamic hamartoma;Gelastic;;Gelastic;G40.8;8A60.6;86906
+E97;Non liés à l'âge;Epilepsies réflexes/startle épilepsie;Reflex epilepsies;Reflex;;Reflex;G40.8;8A61.40;310
+E98;Non liés à l'âge;Syndrome de Rasmussen;Rasmussen syndrome;Rasmussen;;Rasmussen;G04.8;8A62.Y;1929
+E110;Suivant localisation anatomique;Epilepsie centrale;central epilepsy;central;focal;central;G40.2;8A6Y;
+E111;Suivant localisation anatomique;Epilepsie de l'AMS;supplementary motor area;supplementary motor area;focal;supplementary motor area;G40.2;8A6Y;
+E112;Suivant localisation anatomique;Epilepsie du carrefour;Temporoparietal junction;Temporoparietal junction;focal;Temporoparietal junction;G40.2;8A6Y;
+E113;Suivant localisation anatomique;Epilepsie frontale dorso-latérale;frontal epilepsy;frontal;focal;frontal;G40.2;8A6Y;
+E114;Suivant localisation anatomique;Epilepsie frontale fronto-mésiale;frontal epilepsy;frontal;focal;;G40.2;8A6Y;
+E115;Suivant localisation anatomique;Epilepsie frontale fronto-orbitaire;frontal epilepsy;frontal;focal;;G40.2;8A6Y;
+E116;Suivant localisation anatomique;Epilepsie frontale sans localisation précise;frontal epilepsy;frontal;focal;;G40.2;8A6Y;
+E117;Suivant localisation anatomique;Epilepsie fronto-temporale;frontal epilepsy;fontral temporal;focal;;G40.2;8A6Y;
+E118;Suivant localisation anatomique;Epilepsie insulaire;insular epilepsy;insular;focal;insular;G40.2;8A6Y;
+E119;Suivant localisation anatomique;Epilepsie multifocale;multifocal epilepsy;multifocal;focal;multifocal;G40.2;8A6Y;
+E120;Suivant localisation anatomique;Epilepsie occipitale;occipital epilepsy;occipital;focal;occipital;G40.2;8A6Y;
+E121;Suivant localisation anatomique;Epilepsie pariétale;parietal epilepsy;parietal;focal;parietal;G40.2;8A6Y;
+E122;Suivant localisation anatomique;"Epilepsie temporale ""plus""";temporal epilepsy;temporal lobe;focal;temporal lobe;G40.2;8A6Y;
+E123;Suivant localisation anatomique;Epilepsie temporale externe;external temporal epilepsy;external temporal;focal;external temporal;G40.2;8A6Y;
+E124;Suivant localisation anatomique;Epilepsie temporale mesio-temporale avec Sclérose Hippocampique;Mesial temporal lobe epilepsy with hippocampal sclerosis (MTLE with HS);MTLE with HS;focal;MTLE with HS;G40.2;8A6Y;
+E125;Suivant localisation anatomique;Epilepsie temporale mesio-temporale sans Sclérose Hippocampique;Mesial temporal lobe epilepsy without  hippocampal sclerosis (MTLE with HS);temporal;focal;;G40.2;8A6Y;
+E126;Suivant localisation anatomique;Epilepsie temporo-occipitale;temporal occipital epilepsy;temporal occipital;focal;temporal occipital;G40.2;8A6Y;
+E127;Suivant localisation anatomique;Epilepsie temporale sans localisation précise;temporal epilepsy without precise location;temporal;focal;;G40.2;8A6Y;
+E128;Suivant localisation anatomique;Autre localisation;Other location;Unkown;focal;;G40.2;8A6Y;
+E129;Suivant localisation anatomique;Localisation indéterminée;Unkown location;Unkown;focal;Unkown;G40.2;8A6Y;
