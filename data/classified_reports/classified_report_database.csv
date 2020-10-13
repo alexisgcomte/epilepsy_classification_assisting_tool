@@ -1,6 +1,6 @@
 Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 2,,,,,,
-6,,,,Testé,E1 - Encephalopathie myoclonique precoce,
+6,,,,Testé,E1 - Encephalopathie myoclonique precoce,1.0
 17,,,,,,
 21,,,,,,
 32,,,,,,
@@ -15,7 +15,7 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 244,,,,,,
 254,,,,,,
 255,,,,,,
-258,"Dravet, myoclonic absences",Generalized,Unkown,,E123 - Epilepsie temporale externe,
+258,"Dravet, myoclonic absences",Generalized,Unkown,test,E118 - Epilepsie insulaire,1.0
 272,,,,,,
 281,,,,,,
 287,,,,,,
@@ -406,7 +406,7 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 8164,,,,,,
 8174,,,,,,
 8188,,,,,,
-8204,,,,,E31 - Encepahlopathie myoclonique des affections non progressives,
+8204,,,,,E31 - Encepahlopathie myoclonique des affections non progressives,1.0
 8292,,,,,,
 8295,,,,,,
 8303,,,,,,
