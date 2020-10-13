@@ -124,7 +124,7 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 2042,,,,,,
 2044,,,,,,
 2051,,,,test 42,E53 - Epilepsie a crises myoclono-atoniques (precedement astatique ; Sd de DOOSE),
-2056,tonic-clonic,Generalized,Right,Ceci est un test d'épielspie,E3 - Syndrome d ohtahara,1.0
+2056,tonic-clonic,Generalized,Right,Ceci est un test d'épielspie,E3 - Syndrome d ohtahara,
 2126,,,,,,
 2214,,,,,,
 2225,,,,,,
@@ -133,7 +133,7 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 2236,,,,,,
 2260,,,,,,
 2271,,,,,,
-2289,"infantile, Gastaut type",Generalized,,test héhéh,E38 - Syndrome de West,1.0
+2289,"infantile, Gastaut type",Generalized,,test héhéh,E38 - Syndrome de West,
 2297,,,,,,
 2322,,,,,,
 2348,,,,,,
