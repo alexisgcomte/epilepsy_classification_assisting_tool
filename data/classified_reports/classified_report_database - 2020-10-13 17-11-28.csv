@@ -1,6 +1,6 @@
 Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 2,,,,,,
-6,,,,test,E1 - Encephalopathie myoclonique precoce,1.0
+6,,,,Testé,E1 - Encephalopathie myoclonique precoce,1.0
 17,,,,,,
 21,,,,,,
 32,,,,,,
@@ -15,12 +15,12 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 244,,,,,,
 254,,,,,,
 255,,,,,,
-258,"Dravet, myoclonic absences",Generalized,Unkown,test2,E118 - Epilepsie insulaire,1.0
+258,"Dravet, myoclonic absences",Generalized,Unkown,test,E118 - Epilepsie insulaire,1.0
 272,,,,,,
-281,,,,,,1.0
+281,,,,,,
 287,,,,,,
 289,,,,,,
-302,,,,,,1.0
+302,,,,,,
 327,,,,,,
 404,,,,,,
 418,,,,,,
@@ -123,8 +123,8 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 2021,,,,,,
 2042,,,,,,
 2044,,,,,,
-2051,,,,,E53 - Epilepsie a crises myoclono-atoniques (precedement astatique ; Sd de DOOSE),1.0
-2056,tonic-clonic,Generalized,Right,Ceci est un test d'épielspie edfsdfdsf,E3 - Syndrome d ohtahara,1.0
+2051,,,,test 42,E53 - Epilepsie a crises myoclono-atoniques (precedement astatique ; Sd de DOOSE),
+2056,tonic-clonic,Generalized,Right,Ceci est un test d'épielspie,E3 - Syndrome d ohtahara,1.0
 2126,,,,,,
 2214,,,,,,
 2225,,,,,,
