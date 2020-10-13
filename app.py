@@ -258,6 +258,14 @@ def last_patient_classified():
     last_patient_classified = last_patient_classified_df['last_patient_classified'].iloc[0]
     return last_patient_classified_df, last_patient_classified
 
+
+def sorted_list_definition(dataset, seizure_only_filter):
+    agg_dataset = dataset[['Patient_name','Nb_Seizures']].groupby(by='Patient_name').sum()
+    agg_dataset = agg_dataset[agg_dataset['Nb_Seizures'] >= seizure_only_filter]
+    sorted_list = sorted(list(set(agg_dataset.index)))
+    return sorted_list
+
+
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.sidebar.info('Loading data...')
 save_path = update_save_path()
@@ -273,18 +281,30 @@ thesaurus_list = load_thesaurus_list()
 target_tags_list, correspondance_dataset = simplified_key_words()
 
 # Notify the reader that the data was successfully loaded.
-data_load_state.success("Data Loaded in cache successfully!")
+data_load_state.success("Data Loaded successfully!")
 
 # SIDEBAR WINDOWS
 
-unique_patient_ids = set(dataset["Patient_name"])
-sorted_list = sorted(list(unique_patient_ids))
-
-last_patient_classified_df, last_patient_classified = last_patient_classified()
-selected_patient = last_patient_classified
-
 # Patient ID navigation
 st.sidebar.subheader('Patient ID navigation:')
+
+seizure_only_filter = 1
+seizure_only_filter = st.sidebar.checkbox('Show only patients with seizures', value=0)
+show_only_epilepsy = st.sidebar.checkbox('Show only seizure reports', value=0)
+sorted_list = sorted_list_definition(dataset, seizure_only_filter)
+
+last_patient_classified_df, last_patient_classified = last_patient_classified()
+
+# Condition if the last saved patient is in the smaller list
+if last_patient_classified in sorted_list:
+    selected_patient = last_patient_classified
+else:
+    for element in sorted_list:
+        if element > last_patient_classified:
+            selected_patient = element
+            break
+
+
 if st.sidebar.button('Next'):
     selected_patient = update_last_patient_classified_next(last_patient_classified_df, selected_patient)
 
@@ -293,10 +313,10 @@ if st.sidebar.button('Previous'):
 
 selected_patient = st.sidebar.selectbox('Manual Selection  ', sorted_list, index=sorted_list.index(selected_patient))
 single_patient_df = extract_info(selected_patient, dataset)
-show_only_epilepsy = st.sidebar.checkbox('Show only epilepsy reports', value=0)
+
+
 if show_only_epilepsy == 1:
     single_patient_df = single_patient_df[single_patient_df["Nb_Seizures"] > 0]
-
 
 # Manual classification part
 
