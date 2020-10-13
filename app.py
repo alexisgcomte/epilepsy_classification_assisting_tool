@@ -307,15 +307,10 @@ else:
 if st.sidebar.button('Next'):
     selected_patient = update_last_patient_classified_next(last_patient_classified_df, selected_patient, sorted_list)
     state.key += 1
-    #text_value = " "
-    #default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = [None, None, None, None, None]
 
 if st.sidebar.button('Previous'):
     selected_patient = update_last_patient_classified_previous(last_patient_classified_df, selected_patient, sorted_list)
     state.key += 1
-    #text_value = " "
-    #default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = [None, None, None, None, None]
-
 
 selected_patient = st.sidebar.selectbox('Manual Selection :', sorted_list, index=sorted_list.index(selected_patient), key=state.key)
 last_patient_classified_df['last_patient_classified'].iloc[0] = selected_patient
@@ -327,7 +322,7 @@ if show_only_epilepsy == 1:
     single_patient_df = single_patient_df[single_patient_df["Nb_Seizures"] > 0]
 
 # Manual classification part
-#default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = [None, None, None, None, None]
+
 default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
 
 st.sidebar.subheader('Information:')
@@ -336,37 +331,6 @@ epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_typ
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags, key=state.key)
 laterality_input = st.sidebar.multiselect('Laterality input', laterality_list, default=default_laterality, key=state.key)
 free_notes_input = st.sidebar.text_area('Some text', value=default_free_notes, key=state.key)
-
-
-#ta_placeholder = st.sidebar.empty()
-#free_notes_input = ta_placeholder.text_area('Some text', value=default_free_notes, key=state.key)
-
-#text_value = default_free_notes
-#free_notes_input = text.text_area("Free notes:", text_value)
-
-#value = 'nooooo'
-#st.sidebar.subheader('free_notes_input:'+free_notes_input)
-#st.sidebar.subheader('text_value:'+text_value)
-#st.sidebar.subheader('default_free_notes:'+default_free_notes)
-
-#default_free_notes_value = default_free_notes
-#st.sidebar.subheader('default_free_notes:'+default_free_notes)
-
-
-#st.sidebar.subheader('default_free_notes:'+default_free_notes)
-
-#st.sidebar.subheader('default_free_notes_value:'+default_free_notes_value)
-
-#free_notes_input = st.sidebar.text_input('Free notes', value='')
-#free_notes_input = default_free_notes_value
-
-#if free_notes_input == default_free_notes_value:
-#    free_notes_input = ' '
-#st.sidebar.subheader('free_notes_input:'+free_notes_input)
-#st.sidebar.subheader('default_free_notes_value:'+default_free_notes_value)
-#st.sidebar.subheader(free_notes_input == default_free_notes_value)
-
-
 
 st.sidebar.subheader('Classification:')
 
@@ -415,7 +379,6 @@ else:
 
 # Filtering filters with reports
 
-
 for index, row in single_patient_df.iterrows():
 
     st.header('Report #' + index)
@@ -439,7 +402,3 @@ for index, row in single_patient_df.iterrows():
     #Display highlighted repport
 
     st.markdown(md_report, unsafe_allow_html=True)
-
-# Reseting free_notes_input
-#free_notes_input = ''
-#state.key += 1
