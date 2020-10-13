@@ -208,12 +208,12 @@ def load_data():
 
 @st.cache
 def load_classified_reports_first(save_path):
-    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding='UTF-8')
-    data.to_csv(save_path, index=False, encoding='UTF-8')
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding='UTF-8', sep=';')
+    data.to_csv(save_path, index=False, encoding='UTF-8', sep=';')
 
 #@st.cache(allow_output_mutation=True)
 def load_classified_reports():
-    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding='UTF-8')
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding='UTF-8', sep=';')
     return data
 
 @st.cache
@@ -346,7 +346,7 @@ status = completion_status(classified_dataset, selected_patient)
 
 if st.sidebar.button('Save'):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, thesaurus_input, free_notes_input)
-    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False, encoding='UTF-8')
+    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False, encoding='UTF-8', sep=';')
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     # Checking if report is now completed
     status = completion_status(classified_dataset, selected_patient)
@@ -357,7 +357,7 @@ if st.sidebar.button('Save'):
 
 if st.sidebar.button('Reviewed'):
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'classified'] = 1
-    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False, encoding='UTF-8')
+    classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False, encoding='UTF-8', sep=';')
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     status = completion_status(classified_dataset, selected_patient)
     data_save_state = st.sidebar.info('Saving data...')
