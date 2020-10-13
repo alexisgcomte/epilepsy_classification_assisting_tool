@@ -4,7 +4,7 @@ Patient_name,Tags,Seizure_type,Laterality,Free_Notes,thesaurus,classified
 17,,,,,,
 21,EME,Focal,Right, Nouveau test,E1 - Encephalopathie myoclonique precoce,1.0
 32,,,,,,
-54,,Focal,, ,E1 - Encephalopathie myoclonique precoce,1.0
+54,,Focal,, ,E35 - Epilepsie familiale benigne du nourisson,1.0
 77,"BFNE, infantile",Generalized,, ,E33 - Epilepsie benigne du nourisson,1.0
 107,,,,,E1 - Encephalopathie myoclonique precoce,1.0
 143,,,,,,

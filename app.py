@@ -332,9 +332,6 @@ default_epilepsy_type, default_tags, default_laterality, default_thesaurus, defa
 
 st.sidebar.subheader('Information:')
 
-if st.sidebar.button('Clear'):
-    state.key += 1
-
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type, key=state.key)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags, key=state.key)
 laterality_input = st.sidebar.multiselect('Laterality input', laterality_list, default=default_laterality, key=state.key)
