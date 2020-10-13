@@ -316,9 +316,12 @@ if st.sidebar.button('Previous'):
     #text_value = " "
     #default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = [None, None, None, None, None]
 
-selected_patient = st.sidebar.selectbox('Manual Selection  ', sorted_list, index=sorted_list.index(selected_patient))
-single_patient_df = extract_info(selected_patient, dataset)
 
+selected_patient = st.sidebar.selectbox('Manual Selection :', sorted_list, index=sorted_list.index(selected_patient), key=state.key)
+last_patient_classified_df['last_patient_classified'].iloc[0] = selected_patient
+last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
+
+single_patient_df = extract_info(selected_patient, dataset)
 
 if show_only_epilepsy == 1:
     single_patient_df = single_patient_df[single_patient_df["Nb_Seizures"] > 0]
