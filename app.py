@@ -306,9 +306,12 @@ st.sidebar.subheader('Information:')
 epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type)
 keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags)
 laterality_input = st.sidebar.multiselect('Laterality input', laterality_list, default=default_laterality)
-free_notes_input = st.sidebar.text_area('Free notes', value=str(default_free_notes))
-
-
+default_free_notes_value = default_free_notes
+free_notes_input = st.sidebar.text_area('Free notes', value=default_free_notes_value)
+#free_notes_input = st.sidebar.text_area('Free notes', value=str(default_free_notes))
+# !!!! Once a freenote is input, it remains in the text box !!!!
+if free_notes_input != default_free_notes_value:
+    default_free_notes_value = default_free_notes_value 
 
 st.sidebar.subheader('Classification:')
 
