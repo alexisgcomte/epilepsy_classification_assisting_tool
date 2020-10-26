@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := say_hello
-SRC_PATH=./src
+SRC_PATH=./epilepsy_classification_assisting_tool
 TEST_PATH=./tests
 
 say_hello:
