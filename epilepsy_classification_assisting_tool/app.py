@@ -1,20 +1,17 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import re
-import ast
-import glob
 from datetime import datetime
 from fuzzywuzzy import fuzz
 import SessionState
+import re
 
 state = SessionState.get(key=0)
-
 
 # FUNCTION DEFINITIONS
 
 def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list):
     try:
+
         # Keep newline in the markdown report
 
         keyword_list, targets_list = levenshtein_extraction(report, target_tags_list, 90)
@@ -26,8 +23,9 @@ def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list
         report = bolded_tagged_sentenced(report)
         report = re.sub("\n", "<br>", report)
         return report, keyword_list
+
     except:
-        return('ERROR WITH KEYWORDS \n \n'+report)
+        return('ERROR WITH KEYWORDS \n \n'+report, 'error')
 
 def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
     return '<span style="background-color: '+ background_color +'; font-weight: '+ font_weight +';">'+ text +'</span>'
@@ -161,7 +159,7 @@ def update_classified_dataset(selected_patient, classified_dataset, epilepsy_typ
 def update_last_patient_classified(last_patient_classified_df, selected_patient):
     # Update the number of the last patient classified
     last_patient_classified_df['last_patient_classified'].iloc[0] = sorted_list[sorted_list.index(selected_patient)]
-    last_patient_classified_df.to_csv('../data/parameters/last_patient_classified.csv', index=False)
+    last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
 
 def update_last_patient_classified_next(last_patient_classified_df, selected_patient, sorted_list):
     # Modify last_patient_classied for the next before loading
@@ -171,7 +169,7 @@ def update_last_patient_classified_next(last_patient_classified_df, selected_pat
     else:
         updated_patient = sorted_list[sorted_list.index(selected_patient) + 1]
     last_patient_classified_df['last_patient_classified'].iloc[0] = updated_patient
-    last_patient_classified_df.to_csv('../data/parameters/last_patient_classified.csv', index=False)
+    last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
     return updated_patient
 
 def update_last_patient_classified_previous(last_patient_classified_df, selected_patient, sorted_list):
@@ -182,7 +180,7 @@ def update_last_patient_classified_previous(last_patient_classified_df, selected
     else:
         updated_patient = sorted_list[sorted_list.index(selected_patient) -1]
     last_patient_classified_df['last_patient_classified'].iloc[0] = updated_patient
-    last_patient_classified_df.to_csv('../data/parameters/last_patient_classified.csv', index=False)
+    last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
     return updated_patient
 
 def completion_status(classified_dataset, selected_patient):
@@ -196,64 +194,64 @@ def completion_status(classified_dataset, selected_patient):
 @st.cache
 def update_save_path():
     now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-    save_path = ('../data/classified_reports/classified_report_database - {}.csv').format(now)
+    save_path = ('data/classified_reports/classified_report_database - {}.csv').format(now)
     return save_path
 
 @st.cache
 def load_data():
     #data = pd.read_csv('data/structured_reports/Sample_annotated_report_database.csv', encoding='utf-8')
-    data = pd.read_csv('../data/structured_reports/Annotated_reports_database_tagged_v0.2 + tags utf8.csv', encoding='utf8', sep=";")
+    data = pd.read_csv('data/structured_reports/Annotated_reports_database_tagged_v0.2 + tags utf8.csv', encoding='utf8', sep=";")
     return data
 
 @st.cache
 def load_classified_reports_first(save_path):
-    data = pd.read_csv('../data/classified_reports/classified_report_database.csv', encoding='UTF-8', sep=';')
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding='UTF-8', sep=';')
     data.to_csv(save_path, index=False, encoding='UTF-8', sep=';')
 
 #@st.cache(allow_output_mutation=True)
 def load_classified_reports():
-    data = pd.read_csv('../data/classified_reports/classified_report_database.csv', encoding='UTF-8', sep=';')
+    data = pd.read_csv('data/classified_reports/classified_report_database.csv', encoding='UTF-8', sep=';')
     return data
 
 @st.cache
 def load_tags_list():
-    data = pd.read_csv('../data/parameters/tags_list.csv', encoding="utf-8")
+    data = pd.read_csv('data/parameters/tags_list.csv', encoding="utf-8")
     tags_list = data['tags'].tolist()
     return tags_list
 
 @st.cache
 def load_epilepsy_types_list():
-    data = pd.read_csv('../data/parameters/epilepsy_types.csv', encoding="utf-8")
+    data = pd.read_csv('data/parameters/epilepsy_types.csv', encoding="utf-8")
     epilepsy_type_list = data['epilepsy_types'].tolist()
     return epilepsy_type_list
 
 @st.cache
 def load_laterality_list():
-    data = pd.read_csv('../data/parameters/laterality_list.csv', encoding="utf-8")
+    data = pd.read_csv('data/parameters/laterality_list.csv', encoding="utf-8")
     laterality_list = data['laterality'].tolist()
     return laterality_list
 
 @st.cache
 def load_neutral_tags_list():
-    data = pd.read_csv('../data/parameters/neutral_tags_list.csv', encoding="utf-8")
+    data = pd.read_csv('data/parameters/neutral_tags_list.csv', encoding="utf-8")
     neutral_tags_list = data['neutral_tags'].tolist()
     return neutral_tags_list
 
 @st.cache
 def load_thesaurus_list():
-    data = pd.read_csv('../data/parameters/thesaurus_list.csv', encoding="utf-8")
+    data = pd.read_csv('data/parameters/thesaurus_list.csv', encoding="utf-8")
     thesaurus_list = data['thesaurus'].tolist()
     return thesaurus_list
 
 @st.cache
 def simplified_key_words():
-    correspondance_dataset = pd.read_csv('../data/parameters/simplified_key_words.csv', encoding="utf-8")
+    correspondance_dataset = pd.read_csv('data/parameters/simplified_key_words.csv', encoding="utf-8")
     target_tags_list = correspondance_dataset['symptome-en-simple'].tolist()
     return target_tags_list, correspondance_dataset
 
 #@st.cache(allow_output_mutation=True)
 def last_patient_classified():
-    last_patient_classified_df = pd.read_csv('../data/parameters/last_patient_classified.csv', encoding="utf-8")
+    last_patient_classified_df = pd.read_csv('data/parameters/last_patient_classified.csv', encoding="utf-8")
     last_patient_classified = last_patient_classified_df['last_patient_classified'].iloc[0]
     return last_patient_classified_df, last_patient_classified
 
@@ -313,7 +311,7 @@ if st.sidebar.button('Previous'):
 
 selected_patient = st.sidebar.selectbox('Manual Selection :', sorted_list, index=sorted_list.index(selected_patient), key=state.key)
 last_patient_classified_df['last_patient_classified'].iloc[0] = selected_patient
-last_patient_classified_df.to_csv('../data/parameters/last_patient_classified.csv', index=False)
+last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
 
 single_patient_df = extract_info(selected_patient, dataset)
 
@@ -369,10 +367,10 @@ st.subheader('Current patient ID is: {}'.format(selected_patient))
 
 if status == 1:
     st.subheader('Status: {}'.format('Classification completed'))
-    st.image('../static/icons/correct.jpg', width = 150)
+    st.image('static/icons/correct.jpg', width = 150)
 else:
     st.subheader('Status: {}'.format('Classification in progress'))
-    st.image('../static/icons/incorrect.jpg', width = 150)
+    st.image('static/icons/incorrect.jpg', width = 150)
 
 # Render report list + meta informations
 
