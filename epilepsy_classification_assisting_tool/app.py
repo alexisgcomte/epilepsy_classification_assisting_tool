@@ -57,7 +57,7 @@ def crisis_type_correspondance(target_tags_list, correspondance_dataset):
 
     for target in target_tags_list:
         try:
-            crisis_type = correspondance_dataset[correspondance_dataset['symptome-en-simple'] == target]['type of crisis'].iloc[0]
+            crisis_type = correspondance_dataset[correspondance_dataset['symptome-en-simple'] == target]['type_of_crisis'].iloc[0]
             if crisis_type not in crisis_type_list:
                 crisis_type_list.append(crisis_type)
         except:
