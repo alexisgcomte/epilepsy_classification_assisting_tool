@@ -370,10 +370,10 @@ st.subheader('Current patient ID is: {}'.format(selected_patient))
 
 if status == 1:
     st.subheader('Status: {}'.format('Classification completed'))
-    st.image('data/icons/correct.jpg', width = 150)
+    st.image('static/icons/correct.jpg', width = 150)
 else:
     st.subheader('Status: {}'.format('Classification in progress'))
-    st.image('data/icons/incorrect.jpg', width = 150)
+    st.image('static/icons/incorrect.jpg', width = 150)
 
 # Render report list + meta informations
 
