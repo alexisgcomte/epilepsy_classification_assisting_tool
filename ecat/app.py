@@ -1,43 +1,21 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from navigation import SessionState
-from decorate.decorate import (
+from modules.navigation import SessionState
+from modules.decorate.decorate import (
     html_decorate_text,
     tags_underlining,
     bolded_tagged_sentenced,
     html_decorate_tag_list
 )
-from levenstein_research.levenstein_research import levenshtein_extraction
-from in_out.in_out import load_language
+from modules.levenstein_research.levenstein_research  import levenshtein_extraction
+from modules.in_out.in_out import load_language
+from mutimodule_functions import create_highlighted_markdown_text
 import re
 
 state = SessionState.get(key=0)
 
 # FUNCTION DEFINITIONS
-
-
-def create_highlighted_markdown_text(report, target_tags_list,
-                                     neutral_tags_list):
-
-    try:
-
-        # Keep newline in the markdown report
-
-        keyword_list, targets_list = levenshtein_extraction(report,
-                                                            target_tags_list,
-                                                            90)
-        targets_list.sort(key=len)
-        report = tags_underlining(report, targets_list,
-                                  background_color="#FFFF00")
-        report = tags_underlining(report, neutral_tags_list,
-                                  background_color="#00ecff")
-        report = bolded_tagged_sentenced(report)
-        report = re.sub("\n", "<br>", report)
-        return report, keyword_list
-
-    except:
-        return('ERROR WITH KEYWORDS \n \n'+report, 'error')
 
 
 def crisis_type_correspondance(target_tags_list, correspondance_dataset):
@@ -319,7 +297,6 @@ if st.sidebar.button(dict_lang['sidebar']['button']['save']):
     update_last_patient_classified(last_patient_classified_df, selected_patient)
     # Checking if report is now completed
     status = completion_status(classified_dataset, selected_patient)
-    
     data_save_state = st.sidebar.info('Saving data...')
     data_save_state.success("Classification saved!")
     state.key += 1

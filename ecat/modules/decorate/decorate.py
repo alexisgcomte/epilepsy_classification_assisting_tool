@@ -1,8 +1,4 @@
 import re
-from epilepsy_classification_assisting_tool.levenstein_research.\
-    levenstein_research \
-    import levenshtein_extraction
-
 
 def html_decorate_text(text: str,
                        background_color: str = "#DDDDDD", 
@@ -54,27 +50,3 @@ def html_decorate_tag_list(tag_list: list) -> str:
                             tag_list]
         tag_list_content = ", ".join(tag_list_content)
         return tag_list_content
-
-
-def create_highlighted_markdown_text(report: str,
-                                     target_tags_list: list,
-                                     neutral_tags_list: list) -> [str, list]:
-
-    try:
-
-        # Keep newline in the markdown report
-
-        keyword_list, targets_list = levenshtein_extraction(report,
-                                                            target_tags_list,
-                                                            90)
-        targets_list.sort(key=len)
-        report = tags_underlining(report, targets_list,
-                                  background_color="#FFFF00")
-        report = tags_underlining(report, neutral_tags_list,
-                                  background_color="#00ecff")
-        report = bolded_tagged_sentenced(report)
-        report = re.sub("\n", "<br>", report)
-        return report, keyword_list
-
-    except:
-        return('ERROR WITH KEYWORDS \n \n'+report, 'error')

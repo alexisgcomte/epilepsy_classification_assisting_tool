@@ -1,4 +1,4 @@
-from epilepsy_classification_assisting_tool.in_out.in_out import load_language
+from ecat.modules.in_out.in_out import load_language
 
 
 def test_dic_output___load_language():

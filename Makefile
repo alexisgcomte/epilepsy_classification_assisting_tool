@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := say_hello
 
-SRC_PATH=./epilepsy_classification_assisting_tool
+SRC_PATH=./ecat
 TEST_PATH=./tests
 
 say_hello:
@@ -14,10 +14,11 @@ make test_all:
 	python -m pytest
 
 test:
-	pytest -s -vvv $(TEST_PATH)
+	pytest -s -vvv 
 	
 coverage:
-	pytest --cov=epilepsy_classification_assisting_tool/ --cov-report html tests/ 
+	pytest --cov=$(SRC_PATH) --cov-report html $(TEST_PATH) 
 
 run:
-	streamlit run ./epilepsy_classification_assisting_tool/app.py
+	streamlit run $(SRC_PATH)/app.py
+	
