@@ -10,7 +10,6 @@ lint:
 	flake8 $(SRC_PATH)
 	flake8 $(TEST_PATH)
 
-
 make test_all:
 	python -m pytest
 

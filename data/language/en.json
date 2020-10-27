@@ -1,0 +1,42 @@
+{   
+"message": {
+    "loading": "Loading data...",
+    "loaded_successfully": "Data Loaded successfully!"
+    },
+"sidebar": {
+    "button": {
+        "next": "Next",
+        "previous": "Previous",
+        "save": "Save",
+        "reviewed": "Reviewed"
+        },
+    "checkbox": {
+        "seizure_patient": "Show only patients with seizures",
+        "seizure_report" : "Show only seizure reports"
+        },
+    "legend": {
+        "patient_id_nav": "Patient ID :",
+        "information": "Information: ",
+        "classification": "Classification: "
+        },
+    "selectbox": {
+        "language": "Language",
+        "manual_selection": "Manual Selection :",
+        "epilepsy_type_input": "Epilepsy type input: ",
+        "keyword_input": "Keywords input: ",
+        "laterality_input": "Laterality input: ",
+        "free_notes": "Free notes: ",
+        "epilepsy_classification": "Epilepsy Classification" 
+        }
+    },
+"main_panel": {
+    "title": "Patient epilepsy classification",
+    "current_patient": "Current patient ID is: ",
+    "status_completed": "Status: Classification completed",
+    "status_progress": "Status: Classification in progress",
+    "report": "Report #",
+    "seizure_during_exam": "Seizure during the exam:",
+    "tags": "Tags",
+    "suggestion": "Suggestion of seizure type"
+    }
+}

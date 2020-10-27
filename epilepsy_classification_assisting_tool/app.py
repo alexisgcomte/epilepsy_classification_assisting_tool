@@ -1,16 +1,17 @@
 import streamlit as st
 import pandas as pd
+import json
 from datetime import datetime
 from fuzzywuzzy import fuzz
 from navigation import SessionState
 from decorate.decorate import *
 from levenstein_research.levenstein_research import *
+from in_out.in_out import load_language
 import re
 
 state = SessionState.get(key=0)
 
 # FUNCTION DEFINITIONS
-
 
 def create_highlighted_markdown_text(report, target_tags_list,
                                      neutral_tags_list):
@@ -211,8 +212,14 @@ def sorted_list_definition(dataset, seizure_only_filter):
     sorted_list = sorted(list(set(agg_dataset.index)))
     return sorted_list
 
+
+# Language implmentation
+selectbox_language = st.sidebar.selectbox('', ['EN','FR'])
+dict_lang = load_language(selectbox_language.lower())
+
+data_load_state = st.sidebar.info(dict_lang['message']['loading'])
 # Create a text element and let the reader know the data is loading.
-data_load_state = st.sidebar.info('Loading data...')
+
 save_path = update_save_path()
 dataset = load_data()
 classified_dataset = load_classified_reports_first(save_path)
@@ -223,19 +230,20 @@ laterality_list = load_laterality_list()
 neutral_tags_list = load_neutral_tags_list()
 thesaurus_list = load_thesaurus_list()
 
+
 target_tags_list, correspondance_dataset = simplified_key_words()
 
 # Notify the reader that the data was successfully loaded.
-data_load_state.success("Data Loaded successfully!")
+data_load_state.success(dict_lang['message']['loaded_successfully'])
 
 # SIDEBAR WINDOWS
 
 # Patient ID navigation
-st.sidebar.subheader('Patient ID navigation:')
+st.sidebar.subheader(dict_lang['sidebar']['legend']['patient_id_nav'])
 
 seizure_only_filter = 1
-seizure_only_filter = st.sidebar.checkbox('Show only patients with seizures', value=0)
-show_only_epilepsy = st.sidebar.checkbox('Show only seizure reports', value=0)
+seizure_only_filter = st.sidebar.checkbox(dict_lang['sidebar']['checkbox']['seizure_patient'], value=0)
+show_only_epilepsy = st.sidebar.checkbox(dict_lang['sidebar']['checkbox']['seizure_report'], value=0)
 sorted_list = sorted_list_definition(dataset, seizure_only_filter)
 
 last_patient_classified_df, last_patient_classified = last_patient_classified()
@@ -250,15 +258,15 @@ else:
             break
 
 
-if st.sidebar.button('Next'):
+if st.sidebar.button(dict_lang['sidebar']['button']['next']):
     selected_patient = update_last_patient_classified_next(last_patient_classified_df, selected_patient, sorted_list)
     state.key += 1
 
-if st.sidebar.button('Previous'):
+if st.sidebar.button(dict_lang['sidebar']['button']['previous']):
     selected_patient = update_last_patient_classified_previous(last_patient_classified_df, selected_patient, sorted_list)
     state.key += 1
 
-selected_patient = st.sidebar.selectbox('Manual Selection :', sorted_list, index=sorted_list.index(selected_patient), key=state.key)
+selected_patient = st.sidebar.selectbox(dict_lang['sidebar']['selectbox']['manual_selection'], sorted_list, index=sorted_list.index(selected_patient), key=state.key)
 last_patient_classified_df['last_patient_classified'].iloc[0] = selected_patient
 last_patient_classified_df.to_csv('data/parameters/last_patient_classified.csv', index=False)
 
@@ -271,14 +279,14 @@ if show_only_epilepsy == 1:
 
 default_epilepsy_type, default_tags, default_laterality, default_thesaurus, default_free_notes = extract_defaut_values(selected_patient, classified_dataset)
 
-st.sidebar.subheader('Information:')
+st.sidebar.subheader(dict_lang['sidebar']['legend']['information'])
 
-epilepsy_type_input = st.sidebar.multiselect('Epilepsy type input', epilepsy_type_list, default=default_epilepsy_type, key=state.key)
-keywords_input = st.sidebar.multiselect('Keywords input', tags_list, default=default_tags, key=state.key)
-laterality_input = st.sidebar.multiselect('Laterality input', laterality_list, default=default_laterality, key=state.key)
-free_notes_input = st.sidebar.text_area('Some text', value=default_free_notes, key=state.key)
+epilepsy_type_input = st.sidebar.multiselect(dict_lang['sidebar']['selectbox']['epilepsy_type_input'], epilepsy_type_list, default=default_epilepsy_type, key=state.key)
+keywords_input = st.sidebar.multiselect(dict_lang['sidebar']['selectbox']['keyword_input'], tags_list, default=default_tags, key=state.key)
+laterality_input = st.sidebar.multiselect(dict_lang['sidebar']['selectbox']['laterality_input'], laterality_list, default=default_laterality, key=state.key)
+free_notes_input = st.sidebar.text_area(dict_lang['sidebar']['selectbox']['free_notes'], value=default_free_notes, key=state.key)
 
-st.sidebar.subheader('Classification:')
+st.sidebar.subheader(dict_lang['sidebar']['legend']['classification'])
 
 def index_thesaurus_list(default_thesaurus):
     if default_thesaurus is None:
@@ -286,11 +294,11 @@ def index_thesaurus_list(default_thesaurus):
     else:
         return re.sub(r"([\]\'\[])",'',str(default_thesaurus))
 
-thesaurus_input = st.sidebar.selectbox('Epilepsy Classification ', thesaurus_list, index=thesaurus_list.index(index_thesaurus_list(default_thesaurus)))
+thesaurus_input = st.sidebar.selectbox(dict_lang['sidebar']['selectbox']['epilepsy_classification'], thesaurus_list, index=thesaurus_list.index(index_thesaurus_list(default_thesaurus)))
 
 status = completion_status(classified_dataset, selected_patient)
 
-if st.sidebar.button('Save'):
+if st.sidebar.button(dict_lang['sidebar']['button']['save']):
     classified_dataset = update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, thesaurus_input, free_notes_input)
     classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False, encoding='UTF-8', sep=';')
     update_last_patient_classified(last_patient_classified_df, selected_patient)
@@ -301,7 +309,7 @@ if st.sidebar.button('Save'):
     data_save_state.success("Classification saved!")
     state.key += 1
 
-if st.sidebar.button('Reviewed'):
+if st.sidebar.button(dict_lang['sidebar']['button']['reviewed']):
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'classified'] = 1
     classified_dataset.to_csv('data/classified_reports/classified_report_database.csv', index=False, encoding='UTF-8', sep=';')
     update_last_patient_classified(last_patient_classified_df, selected_patient)
@@ -311,14 +319,14 @@ if st.sidebar.button('Reviewed'):
     state.key += 1
 
 # MAIN WINDOW
-st.title('Patient epilepsy classification')
-st.subheader('Current patient ID is: {}'.format(selected_patient))
+st.title(dict_lang['main_panel']['title'])
+st.subheader(dict_lang['main_panel']['current_patient']+str(selected_patient))
 
 if status == 1:
-    st.subheader('Status: {}'.format('Classification completed'))
+    st.subheader(dict_lang['main_panel']['status_completed'])
     st.image('static/icons/correct.jpg', width = 150)
 else:
-    st.subheader('Status: {}'.format('Classification in progress'))
+    st.subheader(dict_lang['main_panel']['status_progress'])
     st.image('static/icons/incorrect.jpg', width = 150)
 
 # Render report list + meta informations
@@ -327,18 +335,18 @@ else:
 
 for index, row in single_patient_df.iterrows():
 
-    st.header('Report #' + index)
+    st.header(dict_lang['main_panel']['seizure_during_exam']+ index)
 
     # Display of the informative elements
-    st.subheader("Seizure during the exam:")
+    st.subheader(dict_lang['main_panel']['seizure_during_exam'])
     st.write(html_decorate_text("YES", background_color="#66CD00") if row["Nb_Seizures"] > 0 else html_decorate_text("NO", background_color="#FF7F7F"), unsafe_allow_html=True)
 
     md_report, keyword_list = create_highlighted_markdown_text(row["Patient_report"], target_tags_list, neutral_tags_list)
 
-    st.subheader('Tags')
+    st.subheader(dict_lang['main_panel']['tags'])
     st.write(html_decorate_tag_list(keyword_list), unsafe_allow_html=True)
     
-    st.subheader('Suggestion of seizure type')
+    st.subheader(dict_lang['main_panel']['suggestion'])
     crisis_type_list = crisis_type_correspondance(keyword_list, correspondance_dataset)
 
     st.write(html_decorate_tag_list(crisis_type_list) , unsafe_allow_html=True)
