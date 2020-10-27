@@ -20,7 +20,6 @@
             "classification": "Classification: "
             },
         "selectbox": {
-            "language": "Langue",
             "manual_selection": "Selection manuelle :",
             "epilepsy_type_input": "Type d'épilespie: ",
             "keyword_input": "Mot-clé: ",
@@ -35,7 +34,7 @@
         "status_completed": "Status: classification terminée",
         "status_progress": "Status: classification en cours",
         "report": "Rapport #",
-        "seizure_during_exam": "Crise durant l'examen:",
+        "seizure_during_exam": "Crise durant l'examen: ",
         "tags": "Mots-clés",
         "suggestion": "Suggestion du type d'épilepsie"
         }

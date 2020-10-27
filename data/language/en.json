@@ -20,7 +20,6 @@
         "classification": "Classification: "
         },
     "selectbox": {
-        "language": "Language",
         "manual_selection": "Manual Selection :",
         "epilepsy_type_input": "Epilepsy type input: ",
         "keyword_input": "Keywords input: ",
@@ -35,7 +34,7 @@
     "status_completed": "Status: Classification completed",
     "status_progress": "Status: Classification in progress",
     "report": "Report #",
-    "seizure_during_exam": "Seizure during the exam:",
+    "seizure_during_exam": "Seizure during the exam: ",
     "tags": "Tags",
     "suggestion": "Suggestion of seizure type"
     }

@@ -1,17 +1,21 @@
 import streamlit as st
 import pandas as pd
-import json
 from datetime import datetime
-from fuzzywuzzy import fuzz
 from navigation import SessionState
-from decorate.decorate import *
-from levenstein_research.levenstein_research import *
+from decorate.decorate import (
+    html_decorate_text,
+    tags_underlining,
+    bolded_tagged_sentenced,
+    html_decorate_tag_list
+)
+from levenstein_research.levenstein_research import levenshtein_extraction
 from in_out.in_out import load_language
 import re
 
 state = SessionState.get(key=0)
 
 # FUNCTION DEFINITIONS
+
 
 def create_highlighted_markdown_text(report, target_tags_list,
                                      neutral_tags_list):
@@ -41,7 +45,8 @@ def crisis_type_correspondance(target_tags_list, correspondance_dataset):
 
     for target in target_tags_list:
         try:
-            crisis_type = correspondance_dataset[correspondance_dataset['symptome-en-simple'] == target]['type_of_crisis'].iloc[0]
+            crisis_type = correspondance_dataset[correspondance_dataset
+            ['symptome-en-simple'] == target]['type_of_crisis'].iloc[0]
             if crisis_type not in crisis_type_list:
                 crisis_type_list.append(crisis_type)
         except:
@@ -52,7 +57,15 @@ def crisis_type_correspondance(target_tags_list, correspondance_dataset):
 
 def extract_info(selected_patient, dataset):
     single_patient_df = dataset[dataset["Patient_name"] == selected_patient]
-    single_patient_df = single_patient_df[["Patient_name", "Exam_name", "Nb_Seizures", "Patient_report", "Exam_duration", "Tags", "Seizure_type", "Highlighted_data"]]
+    single_patient_df = single_patient_df[["Patient_name",
+                                           "Exam_name",
+                                           "Nb_Seizures",
+                                           "Patient_report",
+                                           "Exam_duration",
+                                           "Tags",
+                                           "Seizure_type",
+                                           "Highlighted_data"]]
+
     single_patient_df = single_patient_df.groupby("Exam_name").agg({"Patient_name": "first",
                                                                     "Nb_Seizures": "sum",
                                                                     "Patient_report" :"first",
@@ -61,7 +74,9 @@ def extract_info(selected_patient, dataset):
                                                                     "Seizure_type" : "first",
                                                                     "Highlighted_data" : "first"})
 
-    single_patient_df = single_patient_df.sort_values(["Nb_Seizures", "Exam_name"], ascending = (False, True))
+    single_patient_df = single_patient_df.sort_values(["Nb_Seizures",
+                                                       "Exam_name"],
+                                                       ascending = (False, True))
     return single_patient_df
 
 def defaut_value_listing(defaut_values_df):

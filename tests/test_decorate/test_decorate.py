@@ -2,7 +2,8 @@ from epilepsy_classification_assisting_tool.decorate.decorate import (
     html_decorate_text,
     tags_underlining,
     bolded_tagged_sentenced,
-    html_decorate_tag_list
+    html_decorate_tag_list,
+    create_highlighted_markdown_text
 )
 
 
@@ -39,3 +40,16 @@ def test_empty_tag_list_output_tag_list__html_decorate_tag_list():
 def test_str_output_if_len_positive__html_decorate_tag_list():
     tag_list = ['tag1', 'tag2', 'tag3']
     assert type(html_decorate_tag_list(tag_list)) == str
+
+
+def test_output__create_highlighted_markdown_text():
+    report = 'this is an example of report'
+    target_tags_list = 'example'
+    neutral_tags_list = 'report'
+    report, keyword_list = create_highlighted_markdown_text(
+        report,
+        target_tags_list,
+        neutral_tags_list
+    )
+    assert type(report) == str
+    assert type(keyword_list) == list
