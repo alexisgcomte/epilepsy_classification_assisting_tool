@@ -1,4 +1,4 @@
-from ecat.modules.decorate.decorate import (
+from ecat.modules.decorate import (
     html_decorate_text,
     tags_underlining,
     bolded_tagged_sentenced,

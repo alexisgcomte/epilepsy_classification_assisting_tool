@@ -1,4 +1,4 @@
-from ecat.modules.levenstein_research.levenstein_research import levenshtein_extraction
+from ecat.modules.levenstein_research import levenshtein_extraction
 
 
 def test_two_lists_output__levenshtein_extraction():

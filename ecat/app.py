@@ -1,16 +1,16 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from modules.navigation import SessionState
-from modules.decorate.decorate import (
+from modules import SessionState
+from modules.decorate import (
     html_decorate_text,
     tags_underlining,
     bolded_tagged_sentenced,
     html_decorate_tag_list
 )
-from modules.levenstein_research.levenstein_research  import levenshtein_extraction
-from modules.in_out.in_out import load_language
-from mutimodule_functions import create_highlighted_markdown_text
+from modules.levenstein_research  import levenshtein_extraction
+from modules.mutimodule_functions import create_highlighted_markdown_text
+from modules.in_out import load_language
 import re
 
 state = SessionState.get(key=0)

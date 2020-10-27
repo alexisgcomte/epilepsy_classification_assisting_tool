@@ -11,10 +11,10 @@ lint:
 	flake8 $(TEST_PATH)
 
 make test_all:
-	python -m pytest
+	python -m pytest 
 
 test:
-	pytest -s -vvv 
+	pytest -s -vvv $(TEST_PATH)
 	
 coverage:
 	pytest --cov=$(SRC_PATH) --cov-report html $(TEST_PATH) 

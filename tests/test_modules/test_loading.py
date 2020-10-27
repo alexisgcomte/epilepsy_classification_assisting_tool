@@ -1,4 +1,4 @@
-from ecat.modules.loading.loading import (
+from ecat.modules.loading import (
     simplified_key_words)
 import pandas as pd
 
