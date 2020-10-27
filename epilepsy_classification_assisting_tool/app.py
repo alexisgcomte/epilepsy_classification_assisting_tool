@@ -2,24 +2,31 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from fuzzywuzzy import fuzz
-import SessionState
+from navigation import SessionState
+from decorate.decorate import *
+from levenstein_research.levenstein_research import *
 import re
 
 state = SessionState.get(key=0)
 
 # FUNCTION DEFINITIONS
 
-def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list):
+
+def create_highlighted_markdown_text(report, target_tags_list,
+                                     neutral_tags_list):
+
     try:
 
         # Keep newline in the markdown report
 
-        keyword_list, targets_list = levenshtein_extraction(report, target_tags_list, 90)
-        targets_list.sort(key=len);
-        report = tags_underlining(report, targets_list, background_color = "#FFFF00")
-
-        #report = bolded_tagged_sentenced(report)
-        report = tags_underlining(report, neutral_tags_list, background_color = "#00ecff")
+        keyword_list, targets_list = levenshtein_extraction(report,
+                                                            target_tags_list,
+                                                            90)
+        targets_list.sort(key=len)
+        report = tags_underlining(report, targets_list,
+                                  background_color="#FFFF00")
+        report = tags_underlining(report, neutral_tags_list,
+                                  background_color="#00ecff")
         report = bolded_tagged_sentenced(report)
         report = re.sub("\n", "<br>", report)
         return report, keyword_list
@@ -27,28 +34,6 @@ def create_highlighted_markdown_text(report, target_tags_list, neutral_tags_list
     except:
         return('ERROR WITH KEYWORDS \n \n'+report, 'error')
 
-def html_decorate_text(text, background_color = "#DDDDDD", font_weight = "500"):
-    return '<span style="background-color: '+ background_color +'; font-weight: '+ font_weight +';">'+ text +'</span>'
-
-# For the title
-def epilepsy_type_correspondance(tags):
-    return 0
-
-def levenshtein_extraction(report, tags_targets, threshold):
-    keyword_list = []
-    targets_list = []
-    for  tag_target in tags_targets:
-        for i in report.split('.'):
-                if fuzz.partial_ratio(i.lower(), tag_target.lower()) >= threshold:
-                    for j in re.split(';|,|:| |:|-',i):
-                        # CONFIRM PARTIAL RATIO
-                        if fuzz.partial_ratio(j.lower(), tag_target.lower()) >= threshold and len(j)>4:
-                            keyword_list.append(tag_target)
-                            targets_list.append(j)
-    keyword_list = list(set(keyword_list))
-    targets_list = targets_list = list(set(targets_list))
-    
-    return keyword_list, targets_list
 
 def crisis_type_correspondance(target_tags_list, correspondance_dataset):
     crisis_type_list = []
@@ -63,42 +48,6 @@ def crisis_type_correspondance(target_tags_list, correspondance_dataset):
     crisis_type_list = [crisis_type for crisis_type in crisis_type_list if str(crisis_type) != 'nan']
     return crisis_type_list
 
-def bolded_tagged_sentenced(report):
-    bolded_report = ''
-    for sentence in str(report).split('.'):
-        if re.search('<span style=', sentence):
-            sentence = str('**') + sentence + str('**.') 
-        else:
-            sentence = sentence + '.'
-        bolded_report += sentence
-    return bolded_report
-
-
-def tags_underlining(report, neutral_tags_list, background_color = "#DDDDDD"):
-    updated_report = report
-    for neutral_tags in neutral_tags_list:
-        search = neutral_tags
-        updated_report = re.sub(search, html_decorate_text(neutral_tags, background_color=background_color), updated_report)
-     
-    return updated_report
-
-# TO DELETE
-def html_decorate_tag_list_2(tag_list):
-    if pd.isnull(tag_list):
-        return tag_list
-    else:
-        tag_list_content = str(tag_list).split(",")
-        tag_list_content = [html_decorate_text(content) for content in tag_list_content]
-        tag_list_content = ", ".join(tag_list_content)
-        return tag_list_content
-
-def html_decorate_tag_list(tag_list):
-    if len(tag_list) == 0:
-        return tag_list
-    else:
-        tag_list_content = [html_decorate_text(content) for content in tag_list]
-        tag_list_content = ", ".join(tag_list_content)
-        return tag_list_content
 
 def extract_info(selected_patient, dataset):
     single_patient_df = dataset[dataset["Patient_name"] == selected_patient]
@@ -128,7 +77,7 @@ def defaut_value_listing(defaut_values_df):
             try:
                 element = element.split(', ')
             except:
-                element = list(element)    
+                element = list(element)
         default_list.append(element)
 
     # Adding free notes
@@ -137,8 +86,8 @@ def defaut_value_listing(defaut_values_df):
         element = ' '
     default_list.append(element)
 
+    return [element for element in default_list]
 
-    return [element for element in default_list]      
 
 def extract_defaut_values(selected_patient, classified_dataset):
     # Extract previously input fields
@@ -148,11 +97,11 @@ def extract_defaut_values(selected_patient, classified_dataset):
 
 def update_classified_dataset(selected_patient, classified_dataset, epilepsy_type_input, keywords_input, laterality_input, thesaurus_input, free_notes_input):
     # Update the classification CSV with input values
-    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Seizure_type'] = re.sub(r"([\]\'\[])",'',str(epilepsy_type_input))
-    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Tags'] = re.sub(r"([\]\'\[])",'',str(keywords_input))
-    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Laterality'] = re.sub(r"([\]\'\[])",'',str(laterality_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Seizure_type'] = re.sub(r"([\]\'\[])", '', str(epilepsy_type_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Tags'] = re.sub(r"([\]\'\[])", '', str(keywords_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Laterality'] = re.sub(r"([\]\'\[])", '', str(laterality_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'Free_Notes'] = free_notes_input
-    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'thesaurus'] = re.sub(r"([\]\\[])",'',str(thesaurus_input))
+    classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'thesaurus'] = re.sub(r"([\]\\[])", '', str(thesaurus_input))
     classified_dataset.loc[classified_dataset['Patient_name'] == selected_patient, 'classified'] = 1
     return classified_dataset
 
@@ -392,7 +341,6 @@ for index, row in single_patient_df.iterrows():
     st.subheader('Suggestion of seizure type')
     crisis_type_list = crisis_type_correspondance(keyword_list, correspondance_dataset)
 
-    #st.write(html_decorate_tag_list_2(row["Seizure_type"]), unsafe_allow_html=True)
     st.write(html_decorate_tag_list(crisis_type_list) , unsafe_allow_html=True)
 
 

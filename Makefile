@@ -18,7 +18,7 @@ test:
 	pytest -s -vvv $(TEST_PATH)
 	
 coverage:
-	pytest --cov=epilepsy_classification_assisting_tool/ --cov-report html tests/test_*.py 
+	pytest --cov=epilepsy_classification_assisting_tool/ --cov-report html tests/ 
 
 run:
 	streamlit run ./epilepsy_classification_assisting_tool/app.py
