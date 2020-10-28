@@ -2,7 +2,7 @@ import re
 
 
 def html_decorate_text(text: str,
-                       background_color: str = "#DDDDDD", 
+                       background_color: str = "#DDDDDD",
                        font_weight: str = "500") -> str:
 
     html_decorate_text = ''.join([

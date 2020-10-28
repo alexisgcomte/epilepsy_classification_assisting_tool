@@ -1,6 +1,7 @@
-from .levenstein_research import levenshtein_extraction
+from .levenstein_search import levenshtein_extraction
 from .decorate import tags_underlining, bolded_tagged_sentenced
 import re
+
 
 def create_highlighted_markdown_text(report: str,
                                      target_tags_list: list,
@@ -23,4 +24,4 @@ def create_highlighted_markdown_text(report: str,
         return report, keyword_list
 
     except Exception:
-        return('ERROR WITH KEYWORDS \n \n'+report, 'error')
+        return('ERROR WITH KEYWORDS \n \n'+report, ['error'])
