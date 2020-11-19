@@ -1,12 +1,12 @@
-Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
+﻿Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 2;;;;;;
-6;Ohtahara;Focal;"Unkown; Right"; gvdfgdfgfdg ;E1 - Encephalopathie myoclonique precoce;1.0
+6;;;;;;
 17;;;;;;
-21;EME;Focal;Right; Nouveau test;E1 - Encephalopathie myoclonique precoce;1.0
+21;;;;;;
 32;;;;;;
-54;;Focal;; ;E35 - Epilepsie familiale benigne du nourisson;1.0
-77;"BFNE; infantile";Generalized;; ;E33 - Epilepsie benigne du nourisson;1.0
-107;;;;;E1 - Encephalopathie myoclonique precoce;1.0
+54;;;;;;
+77;;;;;;
+107;;;;;;
 143;;;;;;
 148;;;;;;
 175;;;;;;
@@ -15,12 +15,12 @@ Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 244;;;;;;
 254;;;;;;
 255;;;;;;
-258;"Dravet; myoclonic absences";Generalized;Unkown;test2;E118 - Epilepsie insulaire;1.0
+258;;;;;;
 272;;;;;;
-281;;;;;;1.0
+281;;;;;;
 287;;;;;;
 289;;;;;;
-302;;;;;;1.0
+302;;;;;;
 327;;;;;;
 404;;;;;;
 418;;;;;;
@@ -111,20 +111,20 @@ Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 1820;;;;;;
 1843;;;;;;
 1851;;;;;;
-1864;;Focal;; ;E1 - Encephalopathie myoclonique precoce;1.0
+1864;;;;;;
 1878;;;;;;
-1891;Ohtahara;;; ;E34 - Epilepsie du nourisson avec crises migrantes;1.0
+1891;;;;;;
 1944;;;;;;
 1945;;;;;;
-1981;;;;sdfsd ;E1 - Encephalopathie myoclonique precoce;1.0
+1981;;;;;;
 1984;;;;;;
 1986;;;;;;
-2000;;Generalized;; test;E1 - Encephalopathie myoclonique precoce;1.0
+2000;;;;;;
 2021;;;;;;
 2042;;;;;;
 2044;;;;;;
-2051;;;;;;1.0
-2056;tonic-clonic;Generalized;Right;Ceci est un test d'épielspie edfsdfdsf;E3 - Syndrome d ohtahara;1.0
+2051;;;;;;
+2056;;;;;;
 2126;;;;;;
 2214;;;;;;
 2225;;;;;;
@@ -133,7 +133,7 @@ Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 2236;;;;;;
 2260;;;;;;
 2271;;;;;;
-2289;"infantile; Gastaut type";Generalized;;test héhéh;E38 - Syndrome de West;1.0
+2289;;;;;;
 2297;;;;;;
 2322;;;;;;
 2348;;;;;;
@@ -394,7 +394,7 @@ Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 7929;;;;;;
 7936;;;;;;
 7937;;;;;;
-7952;myoclonic atonic;Focal;Left;;;
+7952;;;;;;
 8018;;;;;;
 8029;;;;;;
 8053;;;;;;
@@ -406,7 +406,7 @@ Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 8164;;;;;;
 8174;;;;;;
 8188;;;;;;
-8204;;;;;E31 - Encepahlopathie myoclonique des affections non progressives;1.0
+8204;;;;;;
 8292;;;;;;
 8295;;;;;;
 8303;;;;;;
@@ -521,7 +521,7 @@ Patient_name;Tags;Seizure_type;Laterality;Free_Notes;thesaurus;classified
 10201;;;;;;
 10209;;;;;;
 10234;;;;;;
-10247;"myoclonic absences; tonic-clonic";;Right;;E37 - Syndrome de Dravet;
+10247;;;;;;
 10268;;;;;;
 10275;;;;;;
 10291;;;;;;
