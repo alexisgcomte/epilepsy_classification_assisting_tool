@@ -6,3 +6,4 @@ data/classified_reports/classified_report_database - *
 __pycache__/
 *.pyc
 .vscode/
+htmlcov/

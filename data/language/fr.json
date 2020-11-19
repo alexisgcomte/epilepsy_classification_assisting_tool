@@ -1,0 +1,41 @@
+{   
+    "message": {
+        "loading": "Chargement des données...",
+        "loaded_successfully": "Données chargées avec succès!"
+        },
+    "sidebar": {
+        "button": {
+            "next": "Suivant",
+            "previous": "Précédent",
+            "save": "Sauvegarder",
+            "reviewed": "Revu"
+            },
+        "checkbox": {
+            "seizure_patient": "Patient avec crise uniquement",
+            "seizure_report" : "Rapports avec crise uniquement"
+            },
+        "legend": {
+            "patient_id_nav": "ID Patient :",
+            "information": "Information: ",
+            "classification": "Classification: "
+            },
+        "selectbox": {
+            "manual_selection": "Selection manuelle :",
+            "epilepsy_type_input": "Type d'épilespie: ",
+            "keyword_input": "Mot-clé: ",
+            "laterality_input": "Latéralité: ",
+            "free_notes": "Notes libres: ",
+            "epilepsy_classification": "Classification de l'épilespsie" 
+            }
+        },
+    "main_panel": {
+        "title": "Classification de l'épilespie",
+        "current_patient": "ID patient: ",
+        "status_completed": "Status: classification terminée",
+        "status_progress": "Status: classification en cours",
+        "report": "Rapport #",
+        "seizure_during_exam": "Crise durant l'examen: ",
+        "tags": "Mots-clés",
+        "suggestion": "Suggestion du type d'épilepsie"
+        }
+    }
