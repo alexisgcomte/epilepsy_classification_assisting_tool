@@ -47,8 +47,8 @@ def load_parameters() -> [list, pd.DataFrame]:
 def load_report_and_classification():
 
     now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-    save_path = ('data/classified_reports/classified_report_database - {}.\
-                    csv').format(now)
+    save_path = ('data/classified_reports/classified_report_database - {}.csv'
+        ).format(now)
 
     df_classified_db = pd.read_csv('data/classified_reports/' +
                                    'classified_report_database.csv',
